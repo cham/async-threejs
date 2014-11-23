@@ -8,21 +8,6 @@ define(function(){
         };
     }
 
-    function datControls(){
-        var gui = new dat.GUI();
-        var config = {
-            'rotation': true,
-            'rotationSpeed': 0.01,
-            'cameraDistance': 200
-        };
-
-        gui.add(config, 'rotation');
-        gui.add(config, 'rotationSpeed', -0.2, 0.2);
-        gui.add(config, 'cameraDistance', 0, 1000);
-
-        return config;
-    }
-
     function renderer(){
         var glRenderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
         
@@ -33,11 +18,11 @@ define(function(){
         return glRenderer;
     }
 
-    function camera(){
+    function camera(controls){
         var wSize = windowSize();
         var cam = new THREE.PerspectiveCamera(40, wSize.width / wSize.height, 1, 20000);
         
-        cam.position.set(0, 100, -1000);
+        cam.position.set(controls.cameraX, controls.cameraY, controls.cameraZ);
         cam.target = new THREE.Vector3(0, 0, 0);
         cam.lookAt(cam.target);
 
@@ -57,34 +42,48 @@ define(function(){
         return light;
     }
 
-    function lighting(){
-        var group = new THREE.Group();
-        var ambient = new THREE.AmbientLight(0x222222, 1);
-
-        group.add(ambient);
-        group.add(spotlight(0xE9C2A6, 100, 100, -100));
-        group.add(spotlight(0x555555, -100, 200, -100));
-
-        return group;
-    }
-
     function rotateCamera(cam, controls, ticks){
         var cameraDistance = controls.cameraDistance;
-        cam.position.x = Math.PI - Math.sin(ticks * controls.rotationSpeed) * cameraDistance;
-        cam.position.y = (Math.cos(ticks * controls.rotationSpeed) * cameraDistance) / 2;
-        cam.position.y += cameraDistance / 2;
-        cam.position.z = Math.PI - Math.cos(ticks * controls.rotationSpeed) * cameraDistance;
+        cam.position.set(
+            Math.PI - Math.sin(ticks * controls.rotationSpeed) * cameraDistance,
+            ((Math.cos(ticks * controls.rotationSpeed) * cameraDistance) / 2) + cameraDistance / 2,
+            Math.PI - Math.cos(ticks * controls.rotationSpeed) * cameraDistance
+        );
 
         cam.target = new THREE.Vector3(0, 0, 0);
         cam.lookAt(cam.target);
     }
 
-    function Sandbox(){
+    function positionCamera(cam, controls){
+        cam.position.set(controls.cameraX, controls.cameraY, controls.cameraZ);
+        cam.target = new THREE.Vector3(0, 0, 0);
+        cam.lookAt(cam.target);
+    }
+
+    function requiredOptions(opt){
+        if(!opt.controls){
+            throw new Error('controls are required');
+        }
+    }
+
+    function Sandbox(options){
+        requiredOptions(options || {});
+
         this.scene = new THREE.Scene();
         this.renderer = renderer();
-        this.controls = datControls();
-        this.camera = camera();
-        this.scene.add(lighting());
+        this.controls = options.controls;
+        this.camera = camera(this.controls);
+
+        this.ambient = new THREE.AmbientLight(this.controls.ambient, 1);
+        this.spotlight = spotlight(
+            this.controls.spotlight,
+            this.controls.spotlightX,
+            this.controls.spotlightY,
+            this.controls.spotlightZ
+        );
+
+        this.scene.add(this.ambient);
+        this.scene.add(this.spotlight);
 
         this.resize();
         this.animate();
@@ -101,13 +100,20 @@ define(function(){
         var cam = this.camera;
         var controls = this.controls;
         var numTicks = 0;
+        var ambient = this.ambient;
+        var spotlight = this.spotlight;
 
         function tick(){
             requestAnimationFrame(tick);
-            rotateCamera(cam, controls, numTicks);
             if(controls.rotation){
+                rotateCamera(cam, controls, numTicks);
                 numTicks++;
+            }else{
+                positionCamera(cam, controls);
             }
+            ambient.color = new THREE.Color(controls.ambient);
+            spotlight.position.set(controls.spotlightX, controls.spotlightY, controls.spotlightZ);
+            spotlight.color = new THREE.Color(controls.spotlight);
         }
         tick();
     };

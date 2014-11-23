@@ -1,6 +1,8 @@
 require([
+    'js/controls',
     'js/Sandbox'
 ], function(
+    controls,
     Sandbox
 ){
     'use strict';
@@ -18,7 +20,7 @@ require([
     }
 
     function plane(){
-        var geometry = new THREE.PlaneGeometry(200, 200, 32, 32);
+        var geometry = new THREE.PlaneBufferGeometry(200, 200, 32, 32);
         var material  = new THREE.MeshLambertMaterial({color: 0xffffff});
         var mesh = new THREE.Mesh(geometry, material);
 
@@ -32,15 +34,18 @@ require([
         var stats = new Stats();
 
         stats.domElement.style.position = 'absolute';
-        stats.domElement.style.top = '0';
+        stats.domElement.style.top = 0;
         document.body.appendChild(stats.domElement);
 
         return stats;
     }
 
     function run(){
+        var datControls = controls();
         var stats = makeStats();
-        var sandbox = new Sandbox();
+        var sandbox = new Sandbox({
+            controls: datControls
+        });
 
         function tick(){
             stats.begin();
@@ -52,6 +57,10 @@ require([
 
         sandbox.add(sphere());
         sandbox.add(plane());
+
+        window.addEventListener('resize', function(){
+            sandbox.resize();
+        });
 
         sandbox.appendTo(document.body);
         requestAnimationFrame(tick);
