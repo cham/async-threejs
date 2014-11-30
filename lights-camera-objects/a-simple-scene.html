@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A simple scene</title>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    </style>
+  </head>
+  <body>
+    <script src="../bower_components/threejs/build/three.min.js"></script>
+    <script>
+
+    function windowSize(){
+        return {
+            width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+            height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+        };
+    }
+
+    var wSize = windowSize();
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(40, wSize.width / wSize.height);
+    var renderer = new THREE.WebGLRenderer();
+
+    renderer.setSize(wSize.width, wSize.height);
+    renderer.render(scene, camera);
+
+    document.body.appendChild(renderer.domElement);
+
+    </script>
+  </body>
+</html>

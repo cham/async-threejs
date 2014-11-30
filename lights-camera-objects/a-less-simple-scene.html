@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A less simple scene</title>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    </style>
+  </head>
+  <body>
+    <script src="../bower_components/threejs/build/three.min.js"></script>
+    <script>
+
+    function windowSize(){
+        return {
+            width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+            height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+        };
+    }
+
+    function sphere(){
+        var geometry = new THREE.SphereGeometry(50, 16, 16);
+        var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+    var wSize = windowSize();
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(40, wSize.width / wSize.height);
+    var renderer = new THREE.WebGLRenderer();
+
+    scene.add(sphere());
+
+    camera.position.set(0, 0, 300);
+
+    renderer.setClearColor(0xffffff);
+    renderer.setSize(wSize.width, wSize.height);
+    renderer.render(scene, camera);
+
+    document.body.appendChild(renderer.domElement);
+
+    </script>
+  </body>
+</html>
