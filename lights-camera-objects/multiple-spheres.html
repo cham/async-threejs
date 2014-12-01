@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Multiple spheres</title>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    </style>
+  </head>
+  <body>
+    <script src="../bower_components/threejs/build/three.min.js"></script>
+    <script>
+
+    function windowSize(){
+        return {
+            width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+            height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+        };
+    }
+
+    function sphere(){
+        var geometry = new THREE.SphereGeometry(50, 16, 16);
+        var material = new THREE.MeshLambertMaterial({color: 0x00ff00});
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+    function randomlyPositionedSphere(maxPosition){
+        var mesh = sphere();
+
+        mesh.position.set(
+            (Math.random() * maxPosition) - (maxPosition / 2),
+            (Math.random() * maxPosition) - (maxPosition / 2),
+            (Math.random() * maxPosition) - (maxPosition / 2)
+        );
+
+        return mesh;
+    }
+
+    var wSize = windowSize();
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(40, wSize.width / wSize.height);
+    var renderer = new THREE.WebGLRenderer();
+    var light = new THREE.SpotLight();
+    var boxSize = 1000;
+
+    for(var i = 0; i < 100; i++){
+        scene.add(randomlyPositionedSphere(boxSize));
+    }
+
+    scene.add(light);
+
+    camera.position.set(0, 0, 300);
+    light.position.set(1000, 1000, 1000);
+
+    renderer.setClearColor(0xffffff);
+    renderer.setSize(wSize.width, wSize.height);
+    renderer.render(scene, camera);
+
+    document.body.appendChild(renderer.domElement);
+
+    </script>
+  </body>
+</html>
