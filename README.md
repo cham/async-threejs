@@ -38,3 +38,17 @@ a-lit-scene
 - in our lit scene example, we position the spotlight at 1000,1000,1000. The default target will be 0,0,0 which is where our sphere is
 - I've changed the material the sphere uses to a Lambert material so that the light affects it. I'll cover materials in more detail later.
 - if we now render the scene, we can see our sphere with some shading applied
+
+multiple-spheres
+- it's pretty easy to add multiple spheres to our scene
+- I've added a new method called "randomlyPositionedSphere", which calls sphere() as with our last example, but also sets the position of our sphere
+- the position is just a random place within the range specified with maxPosition, in all three axes
+- then it's just a case of adding a randomlyPositionedSphere to the scene 100 times with a for loop
+
+moving-camera
+- up until now we've only rendered the scene once
+- if we're going to have any animation in the scene then we'll need to render multiple times
+- requestAnimationFrame will allow us to render our scene up to 60 times per second
+- we create a tick function, that positions the camera, renders the scene, increments a tick counter, then schedules another call to itself with requestAnimationFrame
+- it's necessary to tell the camera where to look after we've moved it, or it keep facing forward when moved rather than tracking 0, 0, 0
+- in order to move the camera in a circle, we set the x coordinate to a position on a sine wave, and the z coordinate to a position on a cosine wave. I'll go into more detail on this later
