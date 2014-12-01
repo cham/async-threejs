@@ -45,8 +45,8 @@ multiple-spheres
 - the position is just a random place within the range specified with maxPosition, in all three axes
 - then it's just a case of adding a randomlyPositionedSphere to the scene 100 times with a for loop
 
-Animation
----------
+Simple Animation
+----------------
 
 circular-motion
 - a bit of maths!
