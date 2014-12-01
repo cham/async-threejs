@@ -45,10 +45,21 @@ multiple-spheres
 - the position is just a random place within the range specified with maxPosition, in all three axes
 - then it's just a case of adding a randomlyPositionedSphere to the scene 100 times with a for loop
 
+Animation
+---------
+
+circular-motion
+- a bit of maths!
+- to plot the path of a circle, we can use a sine and cosine wave
+- a sine wave for one of the axes, and a cosine wave for the other axis
+- if both axes use a sine wave, or both use a cosine wave, then we get a nicely eased, but linear line
+- let's look at using this for the camera position in our spheres scene
+
 moving-camera
 - up until now we've only rendered the scene once
 - if we're going to have any animation in the scene then we'll need to render multiple times
 - requestAnimationFrame will allow us to render our scene up to 60 times per second
 - we create a tick function, that positions the camera, renders the scene, increments a tick counter, then schedules another call to itself with requestAnimationFrame
 - it's necessary to tell the camera where to look after we've moved it, or it keep facing forward when moved rather than tracking 0, 0, 0
-- in order to move the camera in a circle, we set the x coordinate to a position on a sine wave, and the z coordinate to a position on a cosine wave. I'll go into more detail on this later
+- in order to move the camera in a circle, we set the x coordinate to a position on a sine wave, and the z coordinate to a position on a cosine wave, as we saw in the previous example
+- et voila!
