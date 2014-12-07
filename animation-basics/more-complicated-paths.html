@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>More complicated paths</title>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    canvas {
+        position: absolute;
+        top: 40px;
+        left: 160px;
+    }
+    span {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+    .xaxis {
+        left: 395px;
+    }
+    .yaxis {
+        top: 330px;
+    }
+    </style>
+  </head>
+  <body>
+    <span class="xaxis">x = Math.cos(time*3)</span>
+    <span class="yaxis">y = Math.sin(time)</span>
+    <script>
+
+    function windowSize(){
+        return {
+            width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+            height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+        };
+    }
+
+    function xPoint(count, scale){
+        return scale + Math.cos(count*3) * scale;
+    }
+
+    function yPoint(count, scale){
+        return scale + Math.sin(count) * scale;
+    }
+
+    function drawXPoint(ctx, count, scale, numPixels){
+        ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+        ctx.fillRect(xPoint(count, scale), 0, numPixels, numPixels);
+    }
+
+    function drawYPoint(ctx, count, scale, numPixels){
+        ctx.fillStyle = 'rgba(0, 0, 255, 1)';
+        ctx.fillRect(0, yPoint(count, scale), numPixels, numPixels);
+    }
+
+    function drawCirclePoint(ctx, count, scale, numPixels){
+        ctx.fillStyle = 'rgba(255, 0, 255, 1)';
+        ctx.fillRect(xPoint(count, scale), yPoint(count, scale), numPixels, numPixels);
+    }
+
+    function fadeCanvas(ctx, scale){
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+        ctx.fillRect(0, 0, scale, scale);
+    }
+
+    function drawLines(ctx, count, scale){
+        ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+        ctx.fillRect(xPoint(count, scale), 0, 1, scale * 2);
+        ctx.fillStyle = 'rgba(0, 0, 255, 1)';
+        ctx.fillRect(0, yPoint(count, scale), scale * 2, 1);
+    }
+
+    function clearLines(ctx, scale){
+        ctx.clearRect(0, 0, scale, scale);
+    }
+
+    var wSize = windowSize();
+    var canvas = document.createElement('canvas');
+    var lineCanvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    var lineContext = lineCanvas.getContext('2d');
+    var tickCount = 0;
+    var boxSize = 300;
+    var dotSize = 5;
+
+    canvas.width = lineCanvas.width = boxSize * 2 + dotSize;
+    canvas.height = lineCanvas.height = boxSize * 2 + dotSize;
+
+    function tick(){
+        requestAnimationFrame(tick);
+
+        drawXPoint(context, tickCount, boxSize, dotSize);
+        drawYPoint(context, tickCount, boxSize, dotSize);
+        drawCirclePoint(context, tickCount, boxSize, dotSize);
+        fadeCanvas(context, boxSize * 2 + dotSize);
+
+        clearLines(lineContext, boxSize * 2 + dotSize);
+        drawLines(lineContext, tickCount, boxSize);
+
+        tickCount += 0.01;
+    }
+    tick();
+
+    document.body.appendChild(canvas);
+    document.body.appendChild(lineCanvas);
+
+    </script>
+  </body>
+</html>

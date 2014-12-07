@@ -45,6 +45,7 @@ multiple-spheres
 - the position is just a random place within the range specified with maxPosition, in all three axes
 - then it's just a case of adding a randomlyPositionedSphere to the scene 100 times with a for loop
 
+
 Simple Animation
 ----------------
 
@@ -63,3 +64,18 @@ moving-camera
 - it's necessary to tell the camera where to look after we've moved it, or it keep facing forward when moved rather than tracking 0, 0, 0
 - in order to move the camera in a circle, we set the x coordinate to a position on a sine wave, and the z coordinate to a position on a cosine wave, as we saw in the previous example
 - et voila!
+
+more-complicated-paths
+- here I've increased the period of the x coordinate
+- this means that we'll be drawing 3 circles per iteration in x, and 1 in y
+- the result of this is a helix type path
+
+moving-camera-2
+- if we apply our helix path to the position of the camera we get the following result
+
+moving-camera-moving-objects
+- in this example, the spheres have a random size between 0 and 50 when created
+- I've also given them a 'speed' attribute when they are made
+- the speed of each sphere is random in each axis
+- then on each tick, we increase the x, y and z coordinate of each sphere based on a sine wave and the speed we gave it when it was created
+- this results in a moving cloud of spheres
