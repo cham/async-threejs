@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Boxes</title>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    </style>
+  </head>
+  <body>
+    <script src="../bower_components/threejs/build/three.min.js"></script>
+    <script src="sandbox.js"></script>
+    <script>
+
+    function box(){
+        var geometry = new THREE.BoxGeometry(40, 50, 60);
+        var material = new THREE.MeshBasicMaterial({
+            color: 0xff0000,
+            wireframe: true
+        });
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+    var object = box();
+
+    scene.add(object);
+
+    </script>
+  </body>
+</html>
