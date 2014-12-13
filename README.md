@@ -79,3 +79,53 @@ moving-camera-moving-objects
 - the speed of each sphere is random in each axis
 - then on each tick, we increase the x, y and z coordinate of each sphere based on a sine wave and the speed we gave it when it was created
 - this results in a moving cloud of spheres
+
+
+Objects
+-------
+
+planes
+
+vertices
+
+faces
+
+boxes
+
+circles
+
+spheres
+
+rings
+
+tori
+
+torusknots
+
+cylinders
+
+cones
+
+pyramids
+
+tetrahedrons
+
+icosahedrons
+
+octahedrons
+
+
+Importing Objects
+-----------------
+examples from tf3dm.com
+
+
+A better sandbox
+----------------
+
+
+Materials
+---------
+
+
+
