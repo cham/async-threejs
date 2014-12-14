@@ -115,17 +115,42 @@ icosahedrons
 octahedrons
 
 
+Materials
+---------
+
+sphere-lambert-basic-phong
+
+sphere-shading
+
+sphere
+
+sphere-texturemap
+
+sphere-bumpmap
+
+sphere-specularmap
+
+sphere-transparency
+
+sphere-materialsides
+
+
 Importing Objects
 -----------------
-examples from tf3dm.com
+
+imported-objects
+- example horse from tf3dm.com
+
+imported-objects-textured
 
 
 A better sandbox
 ----------------
 
+improved-sandbox
 
-Materials
----------
+imported-objects
 
 
-
+Lighting
+--------
