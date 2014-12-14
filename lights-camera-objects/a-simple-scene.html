@@ -28,6 +28,7 @@
     var camera = new THREE.PerspectiveCamera(40, wSize.width / wSize.height);
     var renderer = new THREE.WebGLRenderer();
 
+    renderer.setClearColor(0xff6699);
     renderer.setSize(wSize.width, wSize.height);
     renderer.render(scene, camera);
 
