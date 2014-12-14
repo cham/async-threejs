@@ -2,16 +2,33 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>"Earth" with transparent clouds overlaid</title>
+    <title>Earth with clouds and star field</title>
     <style>
     body {
         margin: 0;
         padding: 0;
         overflow: hidden;
     }
+    .shader {
+        display: none;
+    }
     </style>
   </head>
   <body>
+    <div class="shader vertexShader">
+        varying vec3 vNormal;
+        void main(){
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1);
+        }
+    </div>
+    <div class="shader fragmentShader">
+        varying vec3 vNormal;
+        void main(){
+            float intensity = pow(0.8 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 3.2);
+            gl_FragColor = vec4(0.7, 0.8, 1.0, 1.0) * intensity;
+        }
+    </div>
     <script src="../bower_components/threejs/build/three.min.js"></script>
     <script src="sandbox.js"></script>
     <script>
@@ -31,31 +48,32 @@
         return group;
     }
 
-    function sphere(){
-        var textureMap = 'textures/cloudmap.jpg';
-        var geometry = new THREE.SphereGeometry(30, 64, 64);
-        var material = new THREE.MeshPhongMaterial({
-            map: THREE.ImageUtils.loadTexture(textureMap),
-            alphaMap: THREE.ImageUtils.loadTexture(textureMap),
+    function atmosphere(){
+        var geometry = new THREE.SphereGeometry(44, 64, 64);
+        var material = new THREE.ShaderMaterial({
+            vertexShader: document.querySelector('.vertexShader').textContent,
+            fragmentShader: document.querySelector('.fragmentShader').textContent,
             transparent: true,
-            opacity: 0.7
+            side: THREE.BackSide
         });
-        var mesh = new THREE.Mesh(geometry, material);
+        
+        return new THREE.Mesh(geometry, material);
+    }
 
-        mesh.position.x = -32;
+    function stars(){
+        var textureMap = 'textures/starmap.png';
+        var geometry = new THREE.SphereGeometry(1000, 64, 64);
+        var material = new THREE.MeshBasicMaterial({
+            map: THREE.ImageUtils.loadTexture(textureMap),
+            side: THREE.BackSide
+        });
 
-        function tick(){
-            requestAnimationFrame(tick);
-            mesh.rotation.y += 0.0005;
-        }
-        tick();
-
-        return mesh;
+        return new THREE.Mesh(geometry, material);
     }
 
     function clouds(){
         var textureMap = 'textures/cloudmap.jpg';
-        var geometry = new THREE.SphereGeometry(30.1, 64, 64);
+        var geometry = new THREE.SphereGeometry(40.1, 64, 64);
         var material = new THREE.MeshPhongMaterial({
             map: THREE.ImageUtils.loadTexture(textureMap),
             alphaMap: THREE.ImageUtils.loadTexture(textureMap),
@@ -63,8 +81,6 @@
             opacity: 0.7
         });
         var mesh = new THREE.Mesh(geometry, material);
-
-        mesh.position.x = 32;
 
         function tick(){
             requestAnimationFrame(tick);
@@ -79,7 +95,7 @@
         var textureMap = 'textures/earthmap.jpg';
         var bumpMap = 'textures/bumpmap.jpg';
         var specularMap = 'textures/specularmap.jpg';
-        var geometry = new THREE.SphereGeometry(30, 64, 64);
+        var geometry = new THREE.SphereGeometry(40, 64, 64);
         var material = new THREE.MeshPhongMaterial({
             map: THREE.ImageUtils.loadTexture(textureMap),
             bumpMap: THREE.ImageUtils.loadTexture(bumpMap),
@@ -87,16 +103,14 @@
             specularMap: THREE.ImageUtils.loadTexture(specularMap),
             shininess: 50
         });
-        var mesh = new THREE.Mesh(geometry, material);
 
-        mesh.position.x = 32;
-
-        return mesh;
+        return new THREE.Mesh(geometry, material);
     }
 
-    scene.add(sphere());
+    scene.add(atmosphere());
     scene.add(earth());
     scene.add(clouds());
+    scene.add(stars());
     scene.add(lighting());
 
     </script>

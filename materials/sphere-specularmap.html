@@ -20,9 +20,6 @@
         var light = new THREE.SpotLight(colour, 1);
 
         light.position.set(x, y, z);
-        light.target.position.set(0, 0, 0);
-        light.castShadow = true;
-        light.shadowDarkness = 0.4;
 
         return light;
     }
@@ -34,11 +31,43 @@
         return group;
     }
 
+    function plane(){
+        var specularMap = 'textures/specularmap.jpg';
+        var geometry = new THREE.PlaneBufferGeometry(120, 60);
+        var material = new THREE.MeshPhongMaterial({
+            color: 0x3366ff,
+            shininess: 50,
+            specularMap: THREE.ImageUtils.loadTexture(specularMap),
+            side: THREE.DoubleSide
+        });
+        var mesh = new THREE.Mesh(geometry, material);
+
+        mesh.position.z = 60;
+        mesh.rotation.y = Math.PI;
+
+        return mesh;
+    }
+
     function sphere(){
+        var specularMap = 'textures/specularmap.jpg';
+        var geometry = new THREE.SphereGeometry(30, 64, 64);
+        var material = new THREE.MeshPhongMaterial({
+            color: 0x3366ff,
+            shininess: 50,
+            specularMap: THREE.ImageUtils.loadTexture(specularMap)
+        });
+        var mesh = new THREE.Mesh(geometry, material);
+
+        mesh.position.x = -32;
+
+        return mesh;
+    }
+
+    function specularSphere(){
         var textureMap = 'textures/earthmap.jpg';
         var bumpMap = 'textures/bumpmap.jpg';
         var specularMap = 'textures/specularmap.jpg';
-        var geometry = new THREE.SphereGeometry(40, 64, 64);
+        var geometry = new THREE.SphereGeometry(30, 64, 64);
         var material = new THREE.MeshPhongMaterial({
             map: THREE.ImageUtils.loadTexture(textureMap),
             bumpMap: THREE.ImageUtils.loadTexture(bumpMap),
@@ -46,13 +75,15 @@
             specularMap: THREE.ImageUtils.loadTexture(specularMap),
             shininess: 50
         });
+        var mesh = new THREE.Mesh(geometry, material);
 
-        return new THREE.Mesh(geometry, material);
+        mesh.position.x = 32;
+
+        return mesh;
     }
 
-    var object = sphere();
-
-    scene.add(object);
+    scene.add(sphere());
+    scene.add(specularSphere());
     scene.add(lighting());
 
     </script>

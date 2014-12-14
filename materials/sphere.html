@@ -20,9 +20,6 @@
         var light = new THREE.SpotLight(colour, 1);
 
         light.position.set(x, y, z);
-        light.target.position.set(0, 0, 0);
-        light.castShadow = true;
-        light.shadowDarkness = 0.4;
 
         return light;
     }

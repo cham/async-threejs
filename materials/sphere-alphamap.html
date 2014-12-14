@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Sphere with texture and bump map</title>
+    <title>"Earth" with transparent clouds overlaid</title>
     <style>
     body {
         margin: 0;
@@ -32,30 +32,58 @@
     }
 
     function sphere(){
-        var bumpMap = 'textures/bumpmap.jpg';
+        var textureMap = 'textures/cloudmap.jpg';
         var geometry = new THREE.SphereGeometry(30, 64, 64);
         var material = new THREE.MeshPhongMaterial({
-            color: 0x3366ff,
-            shininess: 50,
-            bumpMap: THREE.ImageUtils.loadTexture(bumpMap),
-            bumpScale: 0.3
+            map: THREE.ImageUtils.loadTexture(textureMap),
+            alphaMap: THREE.ImageUtils.loadTexture(textureMap),
+            transparent: true
         });
         var mesh = new THREE.Mesh(geometry, material);
 
         mesh.position.x = -32;
 
+        function tick(){
+            requestAnimationFrame(tick);
+            mesh.rotation.y += 0.0005;
+        }
+        tick();
+
         return mesh;
     }
 
-    function bumpSphere(){
+    function clouds(){
+        var textureMap = 'textures/cloudmap.jpg';
+        var geometry = new THREE.SphereGeometry(30.1, 64, 64);
+        var material = new THREE.MeshPhongMaterial({
+            map: THREE.ImageUtils.loadTexture(textureMap),
+            alphaMap: THREE.ImageUtils.loadTexture(textureMap),
+            transparent: true
+        });
+        var mesh = new THREE.Mesh(geometry, material);
+
+        mesh.position.x = 32;
+
+        function tick(){
+            requestAnimationFrame(tick);
+            mesh.rotation.y += 0.0005;
+        }
+        tick();
+
+        return mesh;
+    }
+
+    function earth(){
         var textureMap = 'textures/earthmap.jpg';
         var bumpMap = 'textures/bumpmap.jpg';
+        var specularMap = 'textures/specularmap.jpg';
         var geometry = new THREE.SphereGeometry(30, 64, 64);
         var material = new THREE.MeshPhongMaterial({
             map: THREE.ImageUtils.loadTexture(textureMap),
-            shininess: 50,
             bumpMap: THREE.ImageUtils.loadTexture(bumpMap),
-            bumpScale: 0.3
+            bumpScale: 0.3,
+            specularMap: THREE.ImageUtils.loadTexture(specularMap),
+            shininess: 50
         });
         var mesh = new THREE.Mesh(geometry, material);
 
@@ -65,7 +93,8 @@
     }
 
     scene.add(sphere());
-    scene.add(bumpSphere());
+    scene.add(earth());
+    scene.add(clouds());
     scene.add(lighting());
 
     </script>

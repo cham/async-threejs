@@ -27,6 +27,6 @@ function tick(){
 
     renderer.render(scene, camera);
 
-    tickCount += 0.01;
+    tickCount += 0.005;
 }
 tick();

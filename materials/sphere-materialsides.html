@@ -20,9 +20,6 @@
         var light = new THREE.SpotLight(colour, 1);
 
         light.position.set(x, y, z);
-        light.target.position.set(0, 0, 0);
-        light.castShadow = true;
-        light.shadowDarkness = 0.4;
 
         return light;
     }
@@ -47,17 +44,18 @@
 
     function clouds(){
         var textureMap = 'textures/cloudmap.jpg';
-        var geometry = new THREE.SphereGeometry(40.5, 64, 64);
+        var geometry = new THREE.SphereGeometry(40.1, 64, 64);
         var material = new THREE.MeshPhongMaterial({
             map: THREE.ImageUtils.loadTexture(textureMap),
+            alphaMap: THREE.ImageUtils.loadTexture(textureMap),
             transparent: true,
-            opacity: 0.2
+            opacity: 0.7
         });
         var mesh = new THREE.Mesh(geometry, material);
 
         function tick(){
             requestAnimationFrame(tick);
-            mesh.rotation.y += 0.0007;
+            mesh.rotation.y += 0.0005;
         }
         tick();
 
