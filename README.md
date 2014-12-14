@@ -134,6 +134,8 @@ sphere-transparency
 
 sphere-materialsides
 
+sphere-customshader
+
 
 Importing Objects
 -----------------
