@@ -7,8 +7,8 @@ require([
 ){
     'use strict';
 
-    function importedObject(geometry, materials){
-        var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, materials);
+    function importedObject(geometry, material){
+        var mesh = new THREE.Mesh(geometry, material);
 
         mesh.scale.set(5, 5, 5);
         mesh.position.y = 25;
@@ -63,7 +63,7 @@ require([
         });
 
         sandbox.add(plane());
-        sandbox.add(importedObject(geometry, materials));
+        sandbox.add(importedObject(geometry, materials[0]));
 
         sandbox.appendTo(document.body);
         tick();
