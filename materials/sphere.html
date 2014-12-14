@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Phong shaded sphere</title>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    </style>
+  </head>
+  <body>
+    <script src="../bower_components/threejs/build/three.min.js"></script>
+    <script src="sandbox.js"></script>
+    <script>
+
+    function spotlight(colour, x, y, z){
+        var light = new THREE.SpotLight(colour, 1);
+
+        light.position.set(x, y, z);
+        light.target.position.set(0, 0, 0);
+        light.castShadow = true;
+        light.shadowDarkness = 0.4;
+
+        return light;
+    }
+
+    function lighting(){
+        var group = new THREE.Group();
+        group.add(spotlight(0xffffff, 1000, 1000, -1000));
+        return group;
+    }
+
+    function sphere(){
+        var geometry = new THREE.SphereGeometry(40, 64, 64);
+        var material = new THREE.MeshPhongMaterial({
+            color: 0x3366ff,
+            shininess: 50
+        });
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+    var object = sphere();
+
+    scene.add(object);
+    scene.add(lighting());
+
+    </script>
+  </body>
+</html>

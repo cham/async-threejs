@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>"Earth" with transparent clouds overlaid</title>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    </style>
+  </head>
+  <body>
+    <script src="../bower_components/threejs/build/three.min.js"></script>
+    <script src="sandbox.js"></script>
+    <script>
+
+    function spotlight(colour, x, y, z){
+        var light = new THREE.SpotLight(colour, 1);
+
+        light.position.set(x, y, z);
+        light.target.position.set(0, 0, 0);
+        light.castShadow = true;
+        light.shadowDarkness = 0.4;
+
+        return light;
+    }
+
+    function lighting(){
+        var group = new THREE.Group();
+        group.add(spotlight(0xffffff, 1000, 1000, -1000));
+        group.add(new THREE.AmbientLight(0x333333));
+        return group;
+    }
+
+    function clouds(){
+        var textureMap = 'textures/cloudmap.jpg';
+        var geometry = new THREE.SphereGeometry(40.5, 64, 64);
+        var material = new THREE.MeshPhongMaterial({
+            map: THREE.ImageUtils.loadTexture(textureMap),
+            transparent: true,
+            opacity: 0.2
+        });
+        var mesh = new THREE.Mesh(geometry, material);
+
+        function tick(){
+            requestAnimationFrame(tick);
+            mesh.rotation.y += 0.0007;
+        }
+        tick();
+
+        return mesh;
+    }
+
+    function earth(){
+        var textureMap = 'textures/earthmap.jpg';
+        var bumpMap = 'textures/bumpmap.jpg';
+        var specularMap = 'textures/specularmap.jpg';
+        var geometry = new THREE.SphereGeometry(40, 64, 64);
+        var material = new THREE.MeshPhongMaterial({
+            map: THREE.ImageUtils.loadTexture(textureMap),
+            bumpMap: THREE.ImageUtils.loadTexture(bumpMap),
+            bumpScale: 0.3,
+            specularMap: THREE.ImageUtils.loadTexture(specularMap),
+            shininess: 50
+        });
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+    scene.add(earth());
+    scene.add(clouds());
+    scene.add(lighting());
+
+    </script>
+  </body>
+</html>

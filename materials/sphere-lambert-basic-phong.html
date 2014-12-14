@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Phong, Lambert and Basic materials</title>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    </style>
+  </head>
+  <body>
+    <script src="../bower_components/threejs/build/three.min.js"></script>
+    <script src="sandbox.js"></script>
+    <script>
+
+    function spotlight(colour, x, y, z){
+        var light = new THREE.SpotLight(colour, 1);
+
+        light.position.set(x, y, z);
+        light.target.position.set(0, 0, 0);
+        light.castShadow = true;
+        light.shadowDarkness = 0.4;
+
+        return light;
+    }
+
+    function lighting(){
+        var group = new THREE.Group();
+        group.add(spotlight(0xffffff, 1000, 1000, -1000));
+        return group;
+    }
+
+    function phongSphere(){
+        var geometry = new THREE.SphereGeometry(15, 64, 64);
+        var material = new THREE.MeshPhongMaterial({
+            color: 0x3366ff,
+            shininess: 90
+        });
+        var mesh = new THREE.Mesh(geometry, material);
+
+        mesh.position.x = -40;
+
+        return mesh;
+    }
+
+    function lambertSphere(){
+        var geometry = new THREE.SphereGeometry(15, 64, 64);
+        var material = new THREE.MeshLambertMaterial({
+            color: 0xff6633
+        });
+        var mesh = new THREE.Mesh(geometry, material);
+
+        return mesh;
+    }
+
+    function basicSphere(){
+        var geometry = new THREE.SphereGeometry(15, 64, 64);
+        var material = new THREE.MeshBasicMaterial({
+            color: 0x33ff66
+        });
+        var mesh = new THREE.Mesh(geometry, material);
+
+        mesh.position.x = 40;
+
+        return mesh;
+    }
+
+    scene.add(phongSphere());
+    scene.add(lambertSphere());
+    scene.add(basicSphere());
+    scene.add(lighting());
+
+    </script>
+  </body>
+</html>
