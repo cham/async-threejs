@@ -7,11 +7,8 @@ require([
 ){
     'use strict';
 
-    function importedObject(geometry){
-        var material = new THREE.MeshLambertMaterial({
-            color: 0xac632f
-        });
-        var mesh = new THREE.Mesh(geometry, material);
+    function importedObject(geometry, materials){
+        var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, materials);
 
         mesh.scale.set(5, 5, 5);
         mesh.position.y = 25;
@@ -23,7 +20,7 @@ require([
     }
 
     function plane(){
-        var geometry = new THREE.PlaneBufferGeometry(200, 200, 32, 32);
+        var geometry = new THREE.PlaneBufferGeometry(2000, 2000, 256, 256);
         var material  = new THREE.MeshLambertMaterial({color: 0xffffff});
         var mesh = new THREE.Mesh(geometry, material);
 
@@ -43,35 +40,10 @@ require([
         return stats;
     }
 
-    function run(){
-        var datControls = controls();
-        var stats = makeStats();
-        var sandbox = new Sandbox({
-            controls: datControls
-        });
-
-        function tick(){
-            stats.begin();
-            sandbox.render();
-            stats.end();
-
-            requestAnimationFrame(tick);
-        }
-
-        sandbox.add(plane());
-
-        window.addEventListener('resize', function(){
-            sandbox.resize();
-        });
-
-        sandbox.appendTo(document.body);
-        requestAnimationFrame(tick);
-    }
-
     var jsonLoader = new THREE.JSONLoader();
     var file = '../importing-objects/horse.js';
 
-    jsonLoader.load(file, function run(geometry){
+    jsonLoader.load(file, function run(geometry, materials){
         var datControls = controls();
         var stats = makeStats();
         var sandbox = new Sandbox({
@@ -86,15 +58,15 @@ require([
             requestAnimationFrame(tick);
         }
 
-        sandbox.add(plane());
-        sandbox.add(importedObject(geometry));
-
         window.addEventListener('resize', function(){
             sandbox.resize();
         });
 
+        sandbox.add(plane());
+        sandbox.add(importedObject(geometry, materials));
+
         sandbox.appendTo(document.body);
-        requestAnimationFrame(tick);
+        tick();
     });
 
 });
