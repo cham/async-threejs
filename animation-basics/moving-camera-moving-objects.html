@@ -29,7 +29,7 @@
         return new THREE.Mesh(geometry, material);
     }
 
-    function moveSphere(count, mesh){
+    function moveSphere(mesh, count){
         mesh.position.x += Math.sin(count) * mesh.speed.x;
         mesh.position.y += Math.sin(count) * mesh.speed.y;
         mesh.position.z += Math.sin(count) * mesh.speed.z;
@@ -86,7 +86,7 @@
         camera.lookAt(new THREE.Vector3(0,0,0));
 
         for(var i = 0; i < 100; i++){
-            moveSphere(tickCount, spheres[i]);
+            moveSphere(spheres[i], tickCount);
         }
 
         renderer.render(scene, camera);
