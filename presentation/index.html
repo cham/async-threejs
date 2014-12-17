@@ -3,21 +3,26 @@
   <head>
     <meta charset="utf-8">
     <title>A simple scene</title>
+    <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Reenie+Beanie" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="highlight.min.css">
     <style>
     html {
         height: 100%;
         font-family: sans-serif;
     }
     h2 {
-        line-height: 20px;
-        font-size: 20px;
+        font-size: 2.5em;
         font-weight: normal;
+        font-style: italic;
     }
     body {
         margin: 0;
         padding: 0;
         overflow: hidden;
         height: 100%;
+        font-size: 1.3em;
+        font-family: Roboto, sans-serif;
     }
     iframe , section {
         position: absolute;
@@ -26,15 +31,22 @@
         right: 0;
         bottom: 0;
         border: 0;
-        /*display: none;*/
         z-index: 0;
+    }
+    section {
+        display: none;
+    }
+    ul {
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 0;
+        margin-bottom: 0;
     }
     .content {
         z-index: 1;
         position: absolute;
-        bottom: 0;
+        top: 0;
         left: 0;
-        padding: 5px;
         background: #333;
         color: #fff;
         display: none;
@@ -42,464 +54,927 @@
     .transitionable {
         transition: left 0.75s ease-in-out;
     }
+    .subsection {
+        padding: 12px;
+        display: none;
+    }
+    .content .subsection:first-of-type {
+        display: block;
+    }
+    .intro {
+        background: #69f;
+        font-family: 'Reenie Beanie', serif;
+        height: 100%;
+        text-align: center;
+    }
+    .intro h2 {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #fff;
+    }
+    .always-invisible {
+        visibility: hidden;
+        padding: 0;
+    }
     </style>
   </head>
   <body>
+    <section class="intro">
+        <h2>A simple scene</h2>
+    </section>
     <section>
         <iframe data-src="../lights-camera-objects/a-simple-scene.html" width="100%" height="100%" wmode="transparent"></iframe>
         <div class="content">
-            <h2>A simple scene</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Scenes are containers for your three.js objects</li>
+                    <li>You <i>can</i> have multiple scenes, but usually you only need one</li>
+                </ul>
+<pre><code class="js">
+    var scene = new THREE.Scene(); // fill me with stuff!
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>We'll need a camera to take pictures of our scene</li>
+                    <li>As with scenes, you'll often only need one of these</li>
+                    <li>There are a few different types of camera, but PerspectiveCamera will give you a 'natural' look</li>
+                    <li>It takes 4 arguments - the field of view, the view aspect, the 'near' cutoff and the 'far' cutoff</li>
+                    <li>If you don't need to specify an argument, leave it out to use the default value</li>
+                </ul>
+<pre><code class="js">
+    var wSize = windowSize();
+    var camera = new THREE.PerspectiveCamera(40, wSize.width / wSize.height);
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The renderer renders the objects in our scene to the screen</li>
+                    <li>There are 3 renderers - CSS, Canvas and WebGL</li>
+                    <li>We'll only deal with the WebGL renderer for this talk</li>
+                </ul>
+<pre><code class="js">
+    var renderer = new THREE.WebGLRenderer();
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Now that we have our scene, camera and renderer, we set the size of the renderer...</li>
+                    <li>Execute a render, specifying the scene we want to render and the camera to render with...</li>
+                    <li>and append the domElement of the renderer to the body of our HTML document</li>
+                </ul>
+<pre><code class="js">
+    renderer.setSize(wSize.width, wSize.height);
+    renderer.render(scene, camera);
+
+    document.body.appendChild(renderer.domElement);
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The exciting result is an empty screen, as we've not added anything to our scene yet!</li>
+                    <li>You can change the background colour of our render via renderer.setClearColor(hex);</li>
+                </ul>
+<pre><code class="js">
+    renderer.setClearColor(0xff6699);
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Here's the code in it's entirety, it's running in the background right now</li>
+                </ul>
+<pre><code class="js">
+    function windowSize(){
+        return {
+            width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+            height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+        };
+    }
+
+    var wSize = windowSize();
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(40, wSize.width / wSize.height);
+    var renderer = new THREE.WebGLRenderer();
+
+    renderer.setClearColor(0xff6699);
+    renderer.setSize(wSize.width, wSize.height);
+    renderer.render(scene, camera);
+
+    document.body.appendChild(renderer.domElement);
+
+</code></pre>
         </div>
+    </section>
+
+    <section class="intro">
+        <h2>A less simple scene</h2>
     </section>
     <section>
         <iframe data-src="../lights-camera-objects/a-less-simple-scene.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>A less simple scene</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Our scene works but is a bit boring, there's nothing in it!</li>
+                    <li>let's add a sphere to start</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Meshes in Three are composed of two things - Geometry and one or more Materials</li>
+                    <li>Think of geometry as the shape and material as the paint</li>
+                    <li>When these are combined, we have a Mesh that can be added to the scene</li>
+                </ul>
+<pre><code class="js">
+    var mesh = new THREE.Mesh(geometry, material);
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Spheres take 7 arguments, for a basic sphere you only need the first argument - the radius</li>
+                    <li>The next two arguments define the number of horizontal and vertical segments</li>
+                    <li><small>(the next four are used to make sphere segments, if you just want a part of a sphere)</small></li>
+                </ul>
+<pre><code class="js">
+    var geometry = new THREE.SphereGeometry(50, 16, 16);
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>After we have defined our Geometry, it's time to paint it with a Material</li>
+                    <li>MeshBasicMaterial defines a basic material</li>
+                    <li>This material type does not require lighting, and simply paints it the colour we've specified</li>
+                    <li>Materials take a bunch of options - I'm not going to cover them all, the docs are pretty comprehensive</li>
+                </ul>
+<pre><code class="js">
+    var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Here's our complete sphere() function</li>
+                </ul>
+<pre><code class="js">
+    function sphere(){
+        var geometry = new THREE.SphereGeometry(50, 16, 16);
+        var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>To add it to the scene, we use scene.add</li>
+                </ul>
+<pre><code class="js">
+    scene.add(sphere());
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>And we'll need to move the camera out a bit, so it's not inside the sphere</li>
+                </ul>
+<pre><code class="js">
+    camera.position.set(0, 0, 300);
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>It looks like a circle since the basic material does not show any shading</li>
+                    <li>If we turn on wireframes then it's a bit clearer what's going on</li>
+                    <li><small>Some live coding here! Or edit a-less-simple-scene.html to the following:</small></li>
+                </ul>
+<pre><code class="js">
+    function sphere(){
+        var geometry = new THREE.SphereGeometry(50, 16, 16);
+        var material = new THREE.MeshBasicMaterial({
+            color: 0x00ff00,
+            wireframe: true
+        });
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Here's the code for our less simple scene</b></li>
+                </ul>
+<pre><code class="js">
+    function sphere(){
+        var geometry = new THREE.SphereGeometry(50, 16, 16);
+        var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+    var wSize = windowSize();
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(40, wSize.width / wSize.height);
+    var renderer = new THREE.WebGLRenderer();
+
+    scene.add(sphere());
+
+    camera.position.set(0, 0, 300);
+
+    renderer.setClearColor(0xffffff);
+    renderer.setSize(wSize.width, wSize.height);
+    renderer.render(scene, camera);
+
+    document.body.appendChild(renderer.domElement);
+
+</code></pre>
+            <div class="subsection always-invisible"></div>
         </div>
+    </section>
+
+    <section class="intro">
+        <h2>A lit scene</h2>
     </section>
     <section>
         <iframe data-src="../lights-camera-objects/a-lit-scene.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>A lit scene</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>If we want anything other than basic materials then we're going to need some lights</li>
+                    <li>There are a bunch of different lights in Three that all work in different ways</li>
+                    <li>In this example we'll use a SpotLight</li>
+                </ul>
+<pre><code class="js">
+    var light = new THREE.SpotLight();
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Spotlights have a <b>position</b> and shine a cone of light on a <b>target</b></li>
+                    <li>The target will be 0, 0, 0 by default, but I've included it for reference</li>
+                </ul>
+<pre><code class="js">
+    light.position.set(1000, 1000, 1000);
+    light.target.set(0, 0, 0);
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>SpotLights take up to 5 arguments:</b></li>
+                    <li>Their colour</li>
+                    <li>Their intensity</li>
+                    <li>The distance they illuminate to (default 0 = infinity)</li>
+                    <li>The angle of the light cone</li>
+                    <li>The falloff rate, if distance is not 0</li>
+                </ul>
+<pre><code class="js">
+    var light = new THREE.SpotLight(0xff0000, 0.8, 500, 90, 2);
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>I've changed the material the sphere uses to a Lambert material, so that the light affects it</li>
+                    <li>I'll cover materials in more detail later</b></li>
+                </ul>
+<pre><code class="js">
+    function sphere(){
+        var geometry = new THREE.SphereGeometry(50, 16, 16);
+        var material = new THREE.MeshLambertMaterial({color: 0x00ff00});
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Here's the code for our lit scene</b></li>
+                </ul>
+<pre><code class="js">
+    function sphere(){
+        var geometry = new THREE.SphereGeometry(50, 16, 16);
+        var material = new THREE.MeshLambertMaterial({color: 0x00ff00});
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+    var wSize = windowSize();
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(40, wSize.width / wSize.height);
+    var renderer = new THREE.WebGLRenderer();
+    var light = new THREE.SpotLight();
+
+    scene.add(sphere());
+    scene.add(light);
+
+    camera.position.set(0, 0, 300);
+    light.position.set(1000, 1000, 1000);
+
+    renderer.setClearColor(0xffffff);
+    renderer.setSize(wSize.width, wSize.height);
+    renderer.render(scene, camera);
+
+    document.body.appendChild(renderer.domElement);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
+    </section>
+
+    <section class="intro">
+        <h2>Object Positions</h2>
     </section>
     <section>
         <iframe data-src="../lights-camera-objects/multiple-spheres.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Multiple spheres</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>It's straightforward to add multiple spheres to our scene</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>I've added a new function called "randomlyPositionedSphere"</li>
+                    <li>This function calls sphere() as with our last example, but also sets the position of our sphere</li>
+                    <li>The position is random within the range specified with maxPosition, in all three axes</li>
+                </ul>
+<pre><code class="js">
+    function randomlyPositionedSphere(maxPosition){
+        var mesh = sphere();
+
+        mesh.position.set(
+            (Math.random() * maxPosition) - (maxPosition / 2),
+            (Math.random() * maxPosition) - (maxPosition / 2),
+            (Math.random() * maxPosition) - (maxPosition / 2)
+        );
+
+        return mesh;
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Then we call randomlyPositionedSphere 100 times with a for loop</li>
+                </ul>
+<pre><code class="js">
+    for(var i = 0; i < 100; i++){
+        scene.add(randomlyPositionedSphere(boxSize));
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Refreshing the page gives us a random scene each time</li>
+                </ul>
+            </div>
         </div>
     </section>
 
+    <section class="intro">
+        <h2>Animation, Part One</h2>
+    </section>
     <section>
         <iframe data-src="../animation-basics/circular-motion.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Circular motion</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Time for some maths!</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>To plot the path of a circle, we can use a sine and cosine wave:</li>
+                    <li>A sine wave for one axis, and a cosine wave for the other</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+            <div class="subsection">
+                <ul>
+                    <li>If both axes use a sine wave, or both use a cosine wave, then we get a nicely eased but linear line, diagonally</li>
+                    <li><small>some live coding! or change all instances of "Math.cos" to "Math.sin" in animation-basics/circular-motion.html</small></li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
         <iframe data-src="../animation-basics/moving-camera.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Circular motion applied to camera position</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Let's look at how we can use this to give our camera a circular path</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Up to now, we've only rendered the scene once</li>
+                    <li>If we're going to have animation in the scene, we'll need to render each time something changes</li>
+                    <li>requestAnimationFrame will allow us to render our scene up to 60 times per second</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>We create a tick function, that:</li>
+                    <li>
+                        <ol>
+                            <li>positions the camera</li>
+                            <li>renders the scene</li>
+                            <li>increments a tick counter</li>
+                            <li>schedules another call to itself with requestAnimationFrame</li>
+                        </ol>
+                    </li>
+                </ul>
+<pre><code class="js">
+    function tick(){
+        camera.position.set(cameraX, 0, cameraZ);
+
+        renderer.render(scene, camera);
+
+        tickCount += 0.01;
+        requestAnimationFrame(tick);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>In order to move the camera in a circular orbit, we set the x coordinate to a position on a sine wave, and the z coordinate to a position on a cosine wave</li>
+                    <li>renderer.render(scene, camera) is replaced with the following code:</li>
+                </ul>
+<pre><code class="js">
+    var tickCount = 0;
+    function tick(){
+        var cameraX = boxSize * Math.cos(tickCount);
+        var cameraZ = boxSize * Math.sin(tickCount);
+
+        camera.position.set(cameraX, 0, cameraZ);
+        camera.lookAt(new THREE.Vector3(0,0,0));
+
+        renderer.render(scene, camera);
+
+        tickCount += 0.01;
+        requestAnimationFrame(tick);
+    }
+    tick();
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>It's necessary to tell the camera where to look after we've moved it</li>
+                    <li>Without camera.lookAt, it will keep facing in the same direction when moved rather than tracking 0, 0, 0</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../animation-basics/more-complicated-paths.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Circular motion with increased x period</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>A bit more maths!</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>This is the same example as before, but I've increased the period of the x co-ordinate</li>
+                    <li>x is now Math.cos(time*3) instead of Math.cos(time)</li>
+                    <li>This means that we'll be drawing 3 circles per iteration in x, and 1 in y</li>
+                    <li>The result of this is a helix type path</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
         <iframe data-src="../animation-basics/moving-camera-2.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Helix path applied to camera</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Here's the same path applied to the camera position in our sphere scene</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The only change is the following line in tick():</li>
+                </ul>
+<pre><code class="js">
+        var cameraX = boxSize * Math.cos(tickCount*3);
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>You can come up with some really interesting paths just by modifying the period of the sine and cosine waves</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../animation-basics/moving-camera-moving-objects.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Helix path applied to camera and object position</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Why not have each sphere follow a sine wave?</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>sphere() now gives the geometry a random size to make things a bit more interesting</li>
+                </ul>
+<pre><code class="js">
+   function sphere(){
+        var geometry = new THREE.SphereGeometry(Math.random() * 50, 16, 16);
+        var material = new THREE.MeshLambertMaterial({color: 0x00ff00});
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>randomlyPositionedSphere assigns a random "speed" Vector to each mesh</li>
+                    <li>Vector3 is a simple object that represents a three dimensional Vector</li>
+                    <li>You can use them for anything, but representing x, y and z is the most common case</li>
+                </ul>
+<pre><code class="js">
+    function randomlyPositionedSphere(maxPosition){
+        var mesh = sphere();
+
+        mesh.position.set(
+            (Math.random() * maxPosition) - (maxPosition / 2),
+            (Math.random() * maxPosition) - (maxPosition / 2),
+            (Math.random() * maxPosition) - (maxPosition / 2)
+        );
+
+        mesh.speed = new THREE.Vector3(
+            Math.random() * 10 - 5,
+            Math.random() * 10 - 5,
+            Math.random() * 10 - 5
+        );
+
+
+        return mesh;
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>And on each tick(), we call moveSphere for each sphere in the scene:</li>
+                </ul>
+<pre><code class="js">
+    function moveSphere(mesh, count){
+        mesh.position.x += Math.sin(count) * mesh.speed.x;
+        mesh.position.y += Math.sin(count) * mesh.speed.y;
+        mesh.position.z += Math.sin(count) * mesh.speed.z;
+    }
+
+    ...
+
+    function tick(){
+        for(var i = 0; i < 100; i++){
+            moveSphere(spheres[i], tickCount);
+        }
+        ...
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
 
+    <section class="intro">
+        <h2>Geometries</h2>
+    </section>
     <section>
         <iframe data-src="../objects/planes.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Panes</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Panes</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../objects/vertices.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Vertices</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Vertices</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../objects/faces.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Faces</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Faces</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../objects/boxes.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Boxes</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Boxes (formerly "Cubes")</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../objects/circles.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Circles</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Circles</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../objects/spheres.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Spheres</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Spheres</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../objects/rings.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Rings</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Rings</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../objects/tori.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Tori</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Tori</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../objects/torusknots.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Torus knots</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Torus Knots</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../objects/cylinders.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Cylinders</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Cylinders</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../objects/cones.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Cones</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Cones</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../objects/pyramids.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Pyramids</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Pyramids</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../objects/tetrahedrons.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Tetrahedrons</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Tetrahedrons</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../objects/icosahedrons.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Icosahedrons</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Icosahedrons</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../objects/octahedrons.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Octahedrons</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Octahedrons</li>
+                </ul>
+            </div>
         </div>
     </section>
 
+    <section class="intro">
+        <h2>Materials</h2>
+    </section>
     <section>
         <iframe data-src="../materials/sphere-lambert-basic-phong.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Material types</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Material types</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../materials/sphere-shading.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Shading types</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Shading types</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../materials/sphere.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Phong shaded sphere</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Phong shaded sphere</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../materials/sphere-texturemap.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Texture maps</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Texture maps</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../materials/sphere-bumpmap.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Bump maps</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Bump maps</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../materials/sphere-specularmap.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Specular maps</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Specular maps</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../materials/sphere-alphamap.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Alpha maps</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Alpha maps</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../materials/sphere-transparency.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Transparency</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Transparency</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../materials/sphere-materialsides.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Material sides</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Material sides</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../materials/sphere-customshader.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Custom shaders</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Custom shaders</li>
+                </ul>
+            </div>
         </div>
     </section>
 
+    <section class="intro">
+        <h2>Importing Meshes</h2>
+    </section>
     <section>
         <iframe data-src="../importing-objects/importing-objects.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Importing objects</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Importing objects</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../importing-objects/importing-objects-textured.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Importing textured objects</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Using imported textures</li>
+                </ul>
+            </div>
         </div>
     </section>
 
+    <section class="intro">
+        <h2>Improved Sandboxes and Dev Tools</h2>
+    </section>
     <section>
         <iframe data-src="../improved-sandbox/improved-boilerplate.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Improved sandbox</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>An improved sandbox</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
         <iframe data-src="../improved-sandbox/imported-objects.html" width="100%" height="100%"></iframe>
         <div class="content">
-            <h2>Improves sandbox</h2>
-            <p>
-                Lorem ipsum dolor sit amet
-            </p>
+            <div class="subsection">
+                <ul>
+                    <li>Sandbox with a horse!</li>
+                </ul>
+            </div>
         </div>
     </section>
 
-    <script>
-        var slideNum = 0;
-        if(window.location.hash){
-            slideNum = parseInt(window.location.hash.replace('#',''), 10);
-        }
+    <section class="intro">
+        <h2>Lighting</h2>
+    </section>
 
-        function windowSize(){
-            return {
-                width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
-                height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
-            };
-        }
-
-        function getSection(index){
-            return document.querySelectorAll('section')[index];
-        }
-
-        function loadSlide(index){
-            var slide = getSection(index);
-            var frame = slide.querySelector('iframe');
-            var content = slide.querySelector('.content');
-            var wSize = windowSize();
-
-            if(frame){
-                frame.width = wSize.width + 'px';
-                frame.height = wSize.height + 'px';
-                frame.src = frame.dataset.src;
-            }
-            if(content){
-                content.style.display = 'block';
-            }
-        }
-
-        function updateHash(){
-            window.location.hash = '#' + slideNum;
-        }
-
-        function unloadSlideOnTransition(slide){
-            function removeLastFrame(){
-                var prevFrame = slide.querySelector('iframe');
-                if(prevFrame){
-                    prevFrame.src = '';
-                }
-                document.body.removeEventListener('transitionend', removeLastFrame);
-            }
-            document.body.addEventListener('transitionend', removeLastFrame);
-        }
-
-        function next(){
-            var currentSlide = getSection(slideNum);
-            var nextSlide = getSection(slideNum+1);
-            var wSize = windowSize();
-
-            currentSlide.style.left = -wSize.width + 'px';
-            nextSlide.style.left = '0px';
-
-            loadSlide(slideNum+1);
-            unloadSlideOnTransition(currentSlide);
-
-            slideNum++;
-            updateHash();
-        }
-
-        function prev(){
-            var currentSlide = getSection(slideNum);
-            var nextSlide = getSection(slideNum-1);
-            var wSize = windowSize();
-
-            currentSlide.style.left = '0px';
-            nextSlide.style.left = -wSize.width + 'px';
-            nextSlide.classList.remove('transitionable');
-
-            requestAnimationFrame(function(){
-                nextSlide.classList.add('transitionable');
-
-                currentSlide.style.left = wSize.width + 'px';
-                nextSlide.style.left = '0px';
-
-                loadSlide(slideNum-1);
-                unloadSlideOnTransition(currentSlide);
-
-                slideNum--;
-                updateHash();
-            });
-        }
-
-        document.addEventListener('keydown', function(e){
-            if(e.which === 39){
-                return next();
-            }
-            if(e.which === 37){
-                return prev();
-            }
-        });
-
-        function init(){
-            var windowWidth = windowSize().width;
-            Array.apply(null, document.querySelectorAll('section')).forEach(function(section){
-                section.style.left = windowWidth + 'px';
-                section.classList.add('transitionable');
-            });
-            var firstSection = getSection(slideNum);
-            firstSection.style.left = '0px';
-            loadSlide(slideNum);
-        }
-
-        init();
-    </script>
+    <script src="highlight.min.js"></script>
+    <script src="slideshow.js"></script>
   </body>
 </html>
