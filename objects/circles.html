@@ -20,7 +20,7 @@
         var geometry = new THREE.CircleGeometry(40, 16);
         var material = new THREE.MeshBasicMaterial({
             color: 0xff0000,
-            side: THREE.DoubleSide
+            wireframe: true
         });
 
         return new THREE.Mesh(geometry, material);

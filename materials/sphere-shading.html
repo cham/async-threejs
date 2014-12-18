@@ -31,7 +31,7 @@
     }
 
     function smoothShadingSphere(){
-        var geometry = new THREE.SphereGeometry(15, 16, 16);
+        var geometry = new THREE.IcosahedronGeometry(16, 2);
         var material = new THREE.MeshLambertMaterial({
             color: 0x3333ff,
             shading: THREE.SmoothShading
@@ -44,7 +44,7 @@
     }
 
     function flatShadingSphere(){
-        var geometry = new THREE.SphereGeometry(15, 16, 16);
+        var geometry = new THREE.IcosahedronGeometry(16, 2);
         var material = new THREE.MeshLambertMaterial({
             color: 0x33ff33,
             shading: THREE.FlatShading
@@ -55,7 +55,7 @@
     }
 
     function noShadingSphere(){
-        var geometry = new THREE.SphereGeometry(15, 16, 16);
+        var geometry = new THREE.IcosahedronGeometry(16, 2);
         var material = new THREE.MeshLambertMaterial({
             color: 0xff3333,
             shading: THREE.NoShading

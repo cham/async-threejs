@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Tetrahedrons</title>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    </style>
+  </head>
+  <body>
+    <script src="../bower_components/threejs/build/three.min.js"></script>
+    <script src="sandbox.js"></script>
+    <script>
+
+    function tetrahedron(){
+        var geometry = new THREE.TetrahedronGeometry(16, 2);
+        var material = new THREE.MeshBasicMaterial({
+            color: 0xff0000,
+            wireframe: true
+        });
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+    function icosahedron(){
+        var geometry = new THREE.IcosahedronGeometry(16, 2);
+        var material = new THREE.MeshBasicMaterial({
+            color: 0x00ff00,
+            wireframe: true
+        });
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+    function octahedron(){
+        var geometry = new THREE.OctahedronGeometry(16, 2);
+        var material = new THREE.MeshBasicMaterial({
+            color: 0x0000ff,
+            wireframe: true
+        });
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+    function dodecahedron(){
+        var geometry = new THREE.DodecahedronGeometry(16, 2);
+        var material = new THREE.MeshBasicMaterial({
+            color: 0xff00ff,
+            wireframe: true
+        });
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+    var tetra = tetrahedron();
+    var ico = icosahedron();
+    var octa = octahedron();
+    var dodeca = dodecahedron();
+
+    tetra.position.x = -60;
+    ico.position.x = -20;
+    octa.position.x = 20;
+    dodeca.position.x = 60;
+
+    scene.add(tetra);
+    scene.add(ico);
+    scene.add(octa);
+    scene.add(dodeca);
+
+    </script>
+  </body>
+</html>

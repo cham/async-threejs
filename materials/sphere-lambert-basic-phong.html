@@ -48,9 +48,8 @@
         var material = new THREE.MeshLambertMaterial({
             color: 0xff6633
         });
-        var mesh = new THREE.Mesh(geometry, material);
 
-        return mesh;
+        return new THREE.Mesh(geometry, material);
     }
 
     function basicSphere(){

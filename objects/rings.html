@@ -17,10 +17,10 @@
     <script>
 
     function ring(){
-        var geometry = new THREE.RingGeometry(30, 24, 16);
+        var geometry = new THREE.RingGeometry(30, 24, 16, 2);
         var material = new THREE.MeshBasicMaterial({
             color: 0xff0000,
-            side: THREE.DoubleSide
+            wireframe: true
         });
 
         return new THREE.Mesh(geometry, material);

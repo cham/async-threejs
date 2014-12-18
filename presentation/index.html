@@ -37,10 +37,14 @@
         display: none;
     }
     ul {
-        padding-top: 0;
-        padding-bottom: 0;
-        margin-top: 0;
-        margin-bottom: 0;
+        padding: 0;
+        margin: 0;
+    }
+    ul li {
+        list-style-type: none;
+    }
+    ul ol li {
+        list-style-type: decimal;
     }
     .content {
         z-index: 1;
@@ -666,15 +670,35 @@
 
     <section class="intro">
         <h2>Geometries</h2>
+        <p>Update this section to note that all arguments for all geometries are optional</p>
     </section>
     <section>
         <iframe data-src="../objects/planes.html" width="100%" height="100%"></iframe>
         <div class="content">
             <div class="subsection">
                 <ul>
-                    <li>Panes</li>
+                    <li>Planes</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Planes are one of the simplest geometries</li>
+                    <li>Composed of four vertices and two faces</li>
+                    <li>They have a width and height but no depth</li>
+                    <li>Flat objects like this are known as 'Shapes'</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Their constructor takes width as the first argument and height as the second</li>
+                    <li>The third and fourth (optional) arguments define how many width and height segments they should have respectively</li>
+                </ul>
+<pre><code class="js">
+        var geometry = new THREE.PlaneGeometry(40, 60);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -685,6 +709,27 @@
                     <li>Vertices</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>A vertex is a point in 3d space</li>
+                    <li>Geometries are composed of multiple vertices</li>
+                    <li>The wireframe of an object is defined by the edges between these vertices</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Our plane has 4 vertices, which are highlighted in the example like so:</li>
+                </ul>
+<pre><code class="js">
+    var object = plane();
+
+    object.geometry.vertices.forEach(function(vertex){
+        scene.add(positionedSphere(vertex.x, vertex.y, vertex.z));
+    });
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -695,6 +740,45 @@
                     <li>Faces</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>A face is an individual surface of a solid object</li>
+                    <li>Faces are always flat, and usually triangles (THREE.Face3), though you can create custom geometry with square faces (THREE.Face4)</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Faces are defined by the vertices that they join together</li>
+                    <li>In our face() function, we:
+                        <ol>
+                            <li>create a new Geometry and a basic blue Material</li>
+                            <li>set the vertices of the Geometry to those passed to the function</li>
+                            <li>define a single face composed of the 0th, 1st and 2nd vertex</li>
+                            <li>return the Mesh</li>
+                        </ol>
+                    </li>
+                    <li>This gives us the single blue face we see in the example</li>
+                </ul>
+<pre><code class="js">
+    function face(vertices){
+      var geometry = new THREE.Geometry();
+      var material = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+
+      geometry.vertices = vertices;
+      geometry.faces.push(new THREE.Face3(0, 1, 2));
+
+      return new THREE.Mesh(geometry, material);
+    }
+
+    var object = plane();
+
+    scene.add(
+        face(object.geometry.vertices.slice(0, 3))
+    );
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -705,6 +789,17 @@
                     <li>Boxes (formerly "Cubes")</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Boxes have a similar constructor to planes, but with an extra dimension for depth</li>
+                    <li>As with planes, you can supply an additional arguments if you want more segments in each dimension</li>
+                </ul>
+<pre><code class="js">
+    var geometry = new THREE.BoxGeometry(40, 50, 60);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -715,6 +810,25 @@
                     <li>Circles</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Circles are circular Shapes, made out of multiple Face3s</li>
+                    <li>The default number of segments is 8, but you'll probably want to up this in nearly all instances</li>
+                    <li>The example here is using 16 segments instead, so it has 17 vertices and 16 faces</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The first argument passed to CircleGeometry is the radius</li>
+                    <li>The second argument passed to CircleGeometry is the segment count</li>
+                    <li>The third and fourth arguments (both optional) allow you to define circle sections</li>
+                </ul>
+<pre><code class="js">
+    var geometry = new THREE.CircleGeometry(40, 16);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -725,6 +839,33 @@
                     <li>Spheres</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Spheres are three dimensional circular geometries</li>
+                    <li>Each vertex is at the same distance from the center point</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Spheres in Three.js are UV Spheres</li>
+                    <li>This means they are generated with a sequence of rings and segments, like a plane wrapped around a central point</li>
+                    <li>You can also make Spheres using icosa-, tetra-, octa- and dodeca-hedrons</li>
+                    <li>UV Spheres are easiest to map textures onto due to their correlation with planes</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>As we covered earlier, SphereGeometries take 7 arguments</li>
+                    <li>For a basic sphere you only need the first argument - the radius</li>
+                    <li>The next two arguments define the number of horizontal and vertical segments</li>
+                    <li>The next four are used to make partial spheres</li>
+                </ul>
+<pre><code class="js">
+    var geometry = new THREE.SphereGeometry(40, 16, 12);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -735,6 +876,25 @@
                     <li>Rings</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Rings are shapes defined by two circles</li>
+                    <li>An outer circle, and an inner circle that defines a hole in the middle</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The RingGeometry constructor takes 6 arguments</li>
+                    <li>The first two are the radii of the outer and inner circle</li>
+                    <li>The third and fourth define the number of segments</li>
+                    <li>The fifth and six allow you to define partial rings</li>
+                </ul>
+<pre><code class="js">
+    var geometry = new THREE.RingGeometry(30, 24, 16, 2);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -745,6 +905,28 @@
                     <li>Tori</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Spheres are to circles as tori are to rings</li>
+                    <li>Instead of defining an outer and inner radius, you define the radius of the torus, and the radius of the tube</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The TorusGeometry constructor takes 5 arguments</li>
+                    <li>Interestingly, this is one less than the RingGeometry</li>
+                    <li>The first argument is the radius of the torus</li>
+                    <li>The second argument is the radius of the tube</li>
+                    <li>The third defines the number of radial segments</li>
+                    <li>The fourth defines the number of tubular segments</li>
+                    <li>The fifth argument allows you to draw partial tori</li>
+                </ul>
+<pre><code class="js">
+    var geometry = new THREE.TorusGeometry(30, 6, 8, 16);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -755,6 +937,35 @@
                     <li>Torus Knots</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Torus Knots are pretty fun geometries that generate some interesting shapes</li>
+                    <li>They are defined in a similar way to tori, in that they have a radius and a tubular radius</li>
+                    <li>The twisting shape is defined by two numbers, p and q</li>
+                    <li>For a torus knot to be complete, both p and q must be integers</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The constructor of a TorusKnotGeometry takes 7 arguments</li>
+                    <li>
+                        <ol>
+                            <li>The radius</li>
+                            <li>The tubular radius</li>
+                            <li>The number of radial segments</li>
+                            <li>The number of tubular segments</li>
+                            <li>p</li>
+                            <li>q</li>
+                            <li>The height scale - how much the torusknot deviates in the z axis</li>
+                        </ol>
+                    </li>
+                </ul>
+<pre><code class="js">
+    var geometry = new THREE.TorusKnotGeometry(30, 6, 64, 16);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -765,6 +976,32 @@
                     <li>Cylinders</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Cylinders are circles extruded in the y axis</li>
+                    <li>You can supply a different radius to the top and bottom of the cylinder</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>CylinderGeometry takes 6 arguments:</li>
+                    <li>
+                        <ol>
+                            <li>The radius at the top of the cylinder</li>
+                            <li>The radius at the bottom of the cylinder</li>
+                            <li>The height of the cylinder</li>
+                            <li>The number of radial segments</li>
+                            <li>The number of height segments</li>
+                            <li>A boolean denoting whether or not the cylinder is open (true) or capped (false)</li>
+                        </ol>
+                    </li>
+                </ul>
+<pre><code class="js">
+    var geometry = new THREE.CylinderGeometry(20, 20, 60);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -775,6 +1012,17 @@
                     <li>Cones</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>If you define one of the radii for a Cylinder as 0 then the result is a cone</li>
+                    <li>Here's the same Cylinder we saw in the previous example, with a top radius of 0:</li>
+                </ul>
+<pre><code class="js">
+    var geometry = new THREE.CylinderGeometry(0, 20, 60);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -785,36 +1033,73 @@
                     <li>Pyramids</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>A cone with three sides is a pyramid</li>
+                    <li>Here's the same Cylinder we saw in the previous example, but with 3 radial segments:</li>
+                </ul>
+<pre><code class="js">
+    var geometry = new THREE.CylinderGeometry(0, 20, 60, 3);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
-        <iframe data-src="../objects/tetrahedrons.html" width="100%" height="100%"></iframe>
+        <iframe data-src="../objects/all-hedrons.html" width="100%" height="100%"></iframe>
         <div class="content">
             <div class="subsection">
                 <ul>
-                    <li>Tetrahedrons</li>
+                    <li>Tetra-, icosa-, octa- and dodecahedrons</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>All define die-like shapes</li>
+                    <li>As you increase the number of segments they become more like spheres</li>
+                    <li>Better than UV Spheres if you need to alter their geometries</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>All of these geometries take 2 arguments:</li>
+                    <li>
+                        <ol>
+                            <li>The radius of the geometry</li>
+                            <li>The detail of the geometry (default 0)</li>
+                        </ol>
+                    </li>
+                </ul>
+<pre><code class="js">
+    var geometry = new THREE.TetrahedronGeometry(16);
+    var geometry = new THREE.IcosahedronGeometry(16);
+    var geometry = new THREE.OctahedronGeometry(16);
+    var geometry = new THREE.DodecahedronGeometry(16);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
-        <iframe data-src="../objects/icosahedrons.html" width="100%" height="100%"></iframe>
+        <iframe data-src="../objects/detailed-hedrons.html" width="100%" height="100%"></iframe>
         <div class="content">
             <div class="subsection">
                 <ul>
-                    <li>Icosahedrons</li>
+                    <li>Detailed tetra-, icosa-, octa- and dodecahedrons</li>
                 </ul>
             </div>
-        </div>
-    </section>
-    <section>
-        <iframe data-src="../objects/octahedrons.html" width="100%" height="100%"></iframe>
-        <div class="content">
             <div class="subsection">
-                <ul>
-                    <li>Octahedrons</li>
-                </ul>
+<pre><code class="js">
+    var geometry = new THREE.TetrahedronGeometry(16, 2);
+    var geometry = new THREE.IcosahedronGeometry(16, 2);
+    var geometry = new THREE.OctahedronGeometry(16, 2);
+    var geometry = new THREE.DodecahedronGeometry(16, 2);
+
+</code></pre>
             </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
 
@@ -827,6 +1112,11 @@
             <div class="subsection">
                 <ul>
                     <li>Material types</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Notes: Demo contains basic, lambert and phong. This section also needs to cover Depth, Normal and Face materials. May as well leave out Line and LineDashed? Not very interesting</li>
                 </ul>
             </div>
         </div>
