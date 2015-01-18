@@ -77,6 +77,12 @@
         transform: translateY(-50%);
         color: #fff;
     }
+    .intro h3 {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #fff;
+    }
     .always-invisible {
         visibility: hidden;
         padding: 0;
@@ -84,6 +90,32 @@
     </style>
   </head>
   <body>
+
+    <section class="intro">
+        <h2>Learning Three.js</h2>
+        <h3>Dan Neame <a href="https://twitter.com/cham">@cham</a></h3>
+        <h3><a href="http://dan.nea.me">dan.nea.me</a></h3>
+    </section>
+
+    <section class="intro">
+        <h2>What is Three.js?</h2>
+    </section>
+    <section>
+        <iframe data-src="http://www.youtube.com/embed/YY7J6xIkt9M?autoplay=1&amp;autohide=1" width="100%" height="100%" wmode="transparent"></iframe>
+    </section>
+    <section>
+        <iframe data-src="http://www.youtube.com/embed/ADRf8SE3RbM?autoplay=1&amp;autohide=1&amp;start=31" width="100%" height="100%" wmode="transparent"></iframe>
+    </section>
+    <section>
+        <iframe data-src="http://www.youtube.com/embed/c69EwOhj-_Y?autoplay=1&amp;autohide=1" width="100%" height="100%" wmode="transparent"></iframe>
+    </section>
+    <section>
+        <iframe data-src="http://www.youtube.com/embed/R0O_9bp3EKQ?autoplay=1&amp;autohide=1" width="100%" height="100%" wmode="transparent"></iframe>
+    </section>
+    <section>
+        <iframe data-src="http://www.youtube.com/embed/GF2s5r-trRQ?autoplay=1&amp;autohide=1" width="100%" height="100%" wmode="transparent"></iframe>
+    </section>
+
     <section class="intro">
         <h2>A simple scene</h2>
     </section>
@@ -453,7 +485,7 @@
     </section>
 
     <section class="intro">
-        <h2>Animation, Part One</h2>
+        <h2>Animation</h2>
     </section>
     <section>
         <iframe data-src="../animation-basics/circular-motion.html" width="100%" height="100%"></iframe>
@@ -670,7 +702,6 @@
 
     <section class="intro">
         <h2>Geometries</h2>
-        <p>Update this section to note that all arguments for all geometries are optional</p>
     </section>
     <section>
         <iframe data-src="../objects/planes.html" width="100%" height="100%"></iframe>
@@ -1119,6 +1150,7 @@
                     <li>Notes: Demo contains basic, lambert and phong. This section also needs to cover Depth, Normal and Face materials. May as well leave out Line and LineDashed? Not very interesting</li>
                 </ul>
             </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -1263,6 +1295,277 @@
     <section class="intro">
         <h2>Lighting</h2>
     </section>
+    <section>
+        <iframe data-src="../lighting/shadows.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Shadows</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Spotlights are probably the type of light you will use the most</li>
+                    <li>As we saw earlier, Spotlights have a position and shine a cone of light on a target</li>
+                </ul>
+<pre><code class="js">
+    light.position.set(1000, 1000, 1000);
+    light.target.set(0, 0, 0);
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>It is also possible for a Spotlight (or any directional light) to cast shadows</li>
+                    <li>To enable shadows, enable the 'castShadow' property on the light</li>
+                </ul>
+<pre><code class="js">
+    light.castShadow = true;
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Each mesh in your scene will also need to be told to cast a shadow, and to receive a shadow</li>
+                    <li>These are both off by default</li>
+                </ul>
+<pre><code class="js">
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>If your shadow doesn't look very crisp, update the shadowmap resolution</li>
+                    <li>This is controlled by the shadowMapWidth and shadowMapHeight properties</li>
+                    <li>These values must be a power of 2!</li>
+                </ul>
+<pre><code class="js">
+    light.shadowMapWidth = 1024;
+    light.shadowMapHeight = 1024;
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The darkness of your shadow can be controlled with the "shadowDarkess" property</li>
+                </ul>
+<pre><code class="js">
+    light.shadowDarkness = 0.4;
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Finally, you can enable the "camera frustrum" on the light</li>
+                    <li>This allows you to see the boundaries of the light cone</li>
+                    <li>Useful for debugging!</li>
+                </ul>
+<pre><code class="js">
+    light.shadowCameraVisible = true;
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>So, here's everything you need for a decent shadow:</li>
+                </ul>
+<pre><code class="js">
+    light.castShadow = true;
+    light.shadowMapWidth = 1024;
+    light.shadowMapHeight = 1024;
+    light.shadowDarkness = 0.4;
+
+    ...
+
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
+    </section>
+    <section>
+        <iframe data-src="../lighting/directional.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Directional Lights</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Directional lights are similar to SpotLights, but without a light cone</li>
+                    <li>Light is mapped as a plane moving from the light position to the target position</li>
+                    <li>Apart from this difference, Directional lights have almost all the same properties as SpotLights</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>DirectionalLights only take 2 arguments - the colour and intensity</b></li>
+                </ul>
+<pre><code class="js">
+    var light = new THREE.DirectionalLight(colour, intensity);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+    <section>
+        <iframe data-src="../lighting/ambient.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Ambient Lights</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Ambient lights apply their colour to all surfaces of objects in the scene equally</li>
+                    <li>They take only 1 argument - the colour</li>
+                </ul>
+<pre><code class="js">
+    var light = new THREE.AmbientLight(colour);
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>I've removed the plane / floor in this example</li>
+                    <li>Otherwise, you wouldn't be able to see the objects!</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>AmbientLights are best used to lighten your scene globally very slightly</li>
+                    <li>If the colour is too intense they will overpower all your other lights</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+    <section>
+        <iframe data-src="../lighting/hemispherelight.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Hemisphere Lights</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Hemisphere lights are similar to Directional lights, except their light is mapped as a hemisphere rather than a plane</li>
+                    <li>This gives a softer, more "sun-like" effect</li>
+                    <li>Hemisphere lights can also have a ground colour, a bit like an ambient colour</li>
+                </ul>
+            </div>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+    <section>
+        <iframe data-src="../lighting/point.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Point Lights</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Point lights are a bit like light bulbs</li>
+                    <li>They have a position, but no target, and shine in all directions</li>
+                    <li>The distance property controls how far they shine</li>
+                    <li>Quite fun to use on particles!</li>
+                </ul>
+<pre><code class="js">
+    var light = new THREE.PointLight(colour, intensity, distance);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+
+    <section class="intro">
+        <h2>Combining Lights</h2>
+    </section>
+    <section>
+        <iframe data-src="../combined-lighting/sunlight.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Sunlight</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+    <section>
+        <iframe data-src="../combined-lighting/threepoint.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Three Point lighting</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+
+    <section class="intro">
+        <h2>Animating Geometries</h2>
+    </section>
+    <section>
+        <iframe data-src="http://dan.nea.me/audioterrain" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Animating Geometries</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+
+    <section class="intro">
+        <h2>Particles</h2>
+    </section>
+    <section>
+        <iframe data-src="http://dan.nea.me/particlebox" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Particles</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+
+    <section class="intro">
+        <h2>Voxels</h2>
+    </section>
+    <section>
+        <iframe data-src="http://dan.nea.me/voxel-castle" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Voxels</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+
+    <section class="intro">
+        <h2>Fin</h2>
+        <h3>Dan Neame <a href="https://twitter.com/cham">@cham</a></h3>
+        <h3><a href="http://dan.nea.me">dan.nea.me</a></h3>
+    </section>
+
 
     <script src="highlight.min.js"></script>
     <script src="slideshow.js"></script>
