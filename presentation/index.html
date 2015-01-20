@@ -1122,6 +1122,10 @@
                 </ul>
             </div>
             <div class="subsection">
+                <ul>
+                    <li>Here are some examples with their subdivisions turned up to 2:</li>
+                    <li>Even with the smallest increase in vertices they begin to appear more like spheres</li>
+                </ul>
 <pre><code class="js">
     var geometry = new THREE.TetrahedronGeometry(16, 2);
     var geometry = new THREE.IcosahedronGeometry(16, 2);
@@ -1147,8 +1151,93 @@
             </div>
             <div class="subsection">
                 <ul>
-                    <li>Notes: Demo contains basic, lambert and phong. This section also needs to cover Depth, Normal and Face materials. May as well leave out Line and LineDashed? Not very interesting</li>
+                    <li>
+                        The three most commonly used material types are:
+                        <ol>
+                            <li>Basic</li>
+                            <li>Lambert</li>
+                            <li>Phong</li>
+                        </ol>
+                    </li>
                 </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li><b>MeshBasicMaterial</b></li>
+                    <li>&nbsp;</li>
+                    <li>The green sphere in this demo uses a MeshBasicMaterial</li>
+                    <li>Basic materials are just that: pretty basic</li>
+                    <li>They're good for scenes that don't require lighting, or where you need a uniform, flat colour</li>
+                    <li>They can be great for visualisations where you want a flat style, or where you want an exact colour</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>MeshBasicMaterials usually have a colour</li>
+                    <li>They can also have a texture, light, specular, alpha or environment map (more on these later)</li>
+                    <li>Or you can show them as wireframes - like in the previous section on objects</li>
+                    <li>In this example we've just given our sphere a flat green colour:</li>
+                </ul>
+<pre><code class="js">
+    function basicSphere(){
+        var geometry = new THREE.SphereGeometry(15, 64, 64);
+        var material = new THREE.MeshBasicMaterial({color: 0x33ff66});
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
+            <div class="subsection">
+                <ul>
+                    <li><b>MeshLambertMaterial</b></li>
+                    <li>&nbsp;</li>
+                    <li>The brown sphere in this demo uses a MeshLambertMaterial</li>
+                    <li>Unlike Basic materials, Lambert shaded materials take lighting into effect</li>
+                    <li>They are good for creating dull, non-shiny objects like clay</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>MeshLambertMaterials take all the same parameters as MeshBasicMaterials</li>
+                    <li>But since they are effected by lighting, they give a more realistic effect</li>
+                </ul>
+<pre><code class="js">
+    function lambertSphere(){
+        var geometry = new THREE.SphereGeometry(15, 64, 64);
+        var material = new THREE.MeshLambertMaterial({color: 0xff6633});
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
+            <div class="subsection">
+                <ul>
+                    <li><b>MeshPhongMaterial</b></li>
+                    <li>&nbsp;</li>
+                    <li>The blue sphere in this demo uses a MeshPhongMaterial</li>
+                    <li>These are very similar to Lambert materials, but have a shinier shading</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>MeshPhongMaterials, like Lambert, take all the same parameters as MeshBasicMaterials</li>
+                    <li>They also have a 'shininess' parameter, which I've increased in this example (the default is 50)</li>
+                </ul>
+<pre><code class="js">
+    function phongSphere(){
+        var geometry = new THREE.SphereGeometry(15, 64, 64);
+        var material = new THREE.MeshPhongMaterial({
+            color: 0x3366ff,
+            shininess: 90
+        });
+        return new THREE.Mesh(geometry, material);
+    }
+
+</code></pre>
             </div>
             <div class="subsection always-invisible"></div>
         </div>
@@ -1161,6 +1250,31 @@
                     <li>Shading types</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>You can control the shading type for any material affected by lighting</li>
+                    <li>This affects how the lighting is smoothed over each face</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>
+                        In this example we have 3 Icosahedrons with the 3 different shading types:
+                        <ol>
+                            <li>Smooth shading, in blue (the default shading)</li>
+                            <li>Flat shading, in green</li>
+                            <li>No shading, in red</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Flat shading is much faster than smooth shading<li>
+                    <li>As you can see, there's pretty much no discernable difference between Flat and No shading</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -1171,6 +1285,37 @@
                     <li>Phong shaded sphere</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Colouring in a sphere is pretty cool, but there's a lot more we can do with materials</li>
+                    <li>You can make some pretty spectacular scenes with a simple object or two and good use of materials</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Let's make a realistic looking globe with just a few spheres</li>
+                    <li>First off, we'll take a sphere and colour it blue</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>I've turned the shininess down on this sphere</li>
+                    <li>This makes it look a bit more like a "sea" than the previous Phong sphere</li>
+                </ul>
+<pre><code class="js">
+    function sphere(){
+        var geometry = new THREE.SphereGeometry(40, 64, 64);
+        var material = new THREE.MeshPhongMaterial({
+            color: 0x3366ff,
+            shininess: 50
+        });
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -1181,6 +1326,55 @@
                     <li>Texture maps</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Texture maps are <i>great</i> for bringing a bit of life to your objects</li>
+                    <li>They wrap a bitmap around your object</li>
+                    <li>This is straightforward for UV spheres - SphereGeometries use this mapping</li>
+                    <li>For an Icosahedron, you'd need a different map, based on triangles rather than a rectangle</li>
+                    <li>For this reason, when you're working with textures and spheres, a SphereGeometry is usually easiest</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>In this example, we have the blue, phong-shaded sphere from our previous example on the right</li>
+                    <li>And the same sphere with our texture map applied on the left</li>
+                    <li>I've included a Plane in the background with the same texture applied to it</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The earth map is straight from Google images</li>
+                    <li>This is what makes UV spheres so much easier to work with than Icosahedrons</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>If you want to distort the shape of your sphere, Icosahedrons are better</li>
+                    <li>UV Spheres lead to 'tearing' since not all of their vertices are joined by a face</li>
+                    <li>In Icosahedrons, no vertices form an edge, which you get at the top or bottom of UV spheres</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Here's the code for our textured sphere</li>
+                    <li>THREE.ImageUtils.loadTexture handles the loading of the texture for us, so it's pretty straightforward</li>
+                    <li>Notice I've dropped the colour - it's not needed any more</li>
+                </ul>
+<pre><code class="js">
+    function texturedSphere(){
+        var textureMap = 'textures/earthmap.jpg';
+        var geometry = new THREE.SphereGeometry(30, 64, 64);
+        var material = new THREE.MeshPhongMaterial({
+            map: THREE.ImageUtils.loadTexture(textureMap),
+            shininess: 50
+        });
+        return new THREE.Mesh(geometry, material);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -1191,6 +1385,42 @@
                     <li>Bump maps</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Bump maps are greyscale bitmaps, which can be used to simulate bumps and wrinkles on an object</li>
+                    <li>They work by altering the surface of the object during lighting calculations</li>
+                    <li>The <i>geometry</i> of the object is not changed - this is done by the shader</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>In this example, I've applied the same bump map to the blue sphere and to the textured sphere</li>
+                    <li>You should be able to see the bumps on each</li>
+                    <li>The bump map is shown behind, as a texture on the plane - the lighter the pixel, the higher the bump</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Here's the texture and bump map applied to our sphere</li>
+                    <li>Notice the bumpScale property - increasing this will increase the bump size on the sphere</li>
+                </ul>
+<pre><code class="js">
+    function bumpSphere(){
+        var textureMap = 'textures/earthmap.jpg';
+        var bumpMap = 'textures/bumpmap.jpg';
+        var geometry = new THREE.SphereGeometry(30, 64, 64);
+        var material = new THREE.MeshPhongMaterial({
+            map: THREE.ImageUtils.loadTexture(textureMap),
+            shininess: 50,
+            bumpMap: THREE.ImageUtils.loadTexture(bumpMap),
+            bumpScale: 0.3
+        });
+        return new THREE.Mesh(geometry, material);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -1201,6 +1431,43 @@
                     <li>Specular maps</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Specular maps control how shiny each part of the object should be</li>
+                    <li>Like bump maps, these are just greyscale bitmaps</li>
+                    <li>The whiter the pixel, the shinier that part of the object will be</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>I've applied the specular map to our blue sphere and added it to our textured, bumped sphere</li>
+                    <li>As before, it's viewable as a texture on the plane</li>
+                    <li>This allows us to make only the sea shiny - the land isn't shiny at all</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Here's the texture, bump and specular map applied to our sphere</li>
+                </ul>
+<pre><code class="js">
+    function specularSphere(){
+        var textureMap = 'textures/earthmap.jpg';
+        var bumpMap = 'textures/bumpmap.jpg';
+        var specularMap = 'textures/specularmap.jpg';
+        var geometry = new THREE.SphereGeometry(30, 64, 64);
+        var material = new THREE.MeshPhongMaterial({
+            map: THREE.ImageUtils.loadTexture(textureMap),
+            bumpMap: THREE.ImageUtils.loadTexture(bumpMap),
+            bumpScale: 0.3,
+            specularMap: THREE.ImageUtils.loadTexture(specularMap),
+            shininess: 50
+        });
+        return new THREE.Mesh(geometry, material);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -1211,6 +1478,55 @@
                     <li>Alpha maps</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>So far we've done everything with just one sphere and one material</li>
+                    <li>If we want to add clouds to our globe, they'll need to be on a separate sphere</li>
+                    <li>What I've added here is an extra sphere, very slightly larger than our globe sphere, which rotates at a different speed</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The new, larger sphere has an alpha map applied</li>
+                    <li>As you may have guessed, an alpha map controls the transparency of a material</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>You can also see the alpha map applied to a lone sphere by itself, next to our globe</li>
+                    <li>Since clouds are white, we don't need to specify anything other than the alpha map</li>
+                    <li>Where the alpha map is white, the object will be visible, and show it's default colour, which handily is white</li>
+                    <li>We could quite easily make the clouds red by applying a colour property to our cloud sphere</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Here's the code for our cloud sphere, whose radius is 0.1 units bigger than our globe sphere</li>
+                    <li>The 'transparent' property is required in order to enable the alpha map</li>
+                    <li>Notice the tick() method in our clouds function - this keeps the clouds spinning</li>
+                </ul>
+<pre><code class="js">
+    function clouds(){
+        var textureMap = 'textures/cloudmap.jpg';
+        var geometry = new THREE.SphereGeometry(30.1, 64, 64);
+        var material = new THREE.MeshPhongMaterial({
+            alphaMap: THREE.ImageUtils.loadTexture(textureMap),
+            transparent: true
+        });
+        var mesh = new THREE.Mesh(geometry, material);
+
+        function tick(){
+            requestAnimationFrame(tick);
+            mesh.rotation.y += 0.0005;
+        }
+        tick();
+
+        return mesh;
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -1458,9 +1774,9 @@
                 <ul>
                     <li>Hemisphere lights are similar to Directional lights, except their light is mapped as a hemisphere rather than a plane</li>
                     <li>This gives a softer, more "sun-like" effect</li>
-                    <li>Hemisphere lights can also have a ground colour, a bit like an ambient colour</li>
+                    <li>Hemisphere lights can also have a ground colour</li>
+                    <li>This gives an uplight effect in the opposite direction to the main light</li>
                 </ul>
-            </div>
             </div>
             <div class="subsection always-invisible"></div>
         </div>
@@ -1524,6 +1840,21 @@
             <div class="subsection">
                 <ul>
                     <li>Animating Geometries</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+
+    <section class="intro">
+        <h2>Reflection</h2>
+    </section>
+    <section>
+        <iframe data-src="http://dan.nea.me/reflection" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Reflection</li>
                 </ul>
             </div>
             <div class="subsection always-invisible"></div>
