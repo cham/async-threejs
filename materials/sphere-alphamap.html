@@ -35,7 +35,6 @@
         var textureMap = 'textures/cloudmap.jpg';
         var geometry = new THREE.SphereGeometry(30, 64, 64);
         var material = new THREE.MeshPhongMaterial({
-            map: THREE.ImageUtils.loadTexture(textureMap),
             alphaMap: THREE.ImageUtils.loadTexture(textureMap),
             transparent: true
         });
@@ -56,7 +55,6 @@
         var textureMap = 'textures/cloudmap.jpg';
         var geometry = new THREE.SphereGeometry(30.1, 64, 64);
         var material = new THREE.MeshPhongMaterial({
-            map: THREE.ImageUtils.loadTexture(textureMap),
             alphaMap: THREE.ImageUtils.loadTexture(textureMap),
             transparent: true
         });

@@ -35,9 +35,7 @@
         var specularMap = 'textures/specularmap.jpg';
         var geometry = new THREE.PlaneBufferGeometry(120, 60);
         var material = new THREE.MeshPhongMaterial({
-            color: 0x3366ff,
-            shininess: 50,
-            specularMap: THREE.ImageUtils.loadTexture(specularMap),
+            map: THREE.ImageUtils.loadTexture(specularMap),
             side: THREE.DoubleSide
         });
         var mesh = new THREE.Mesh(geometry, material);
@@ -82,6 +80,7 @@
         return mesh;
     }
 
+    scene.add(plane());
     scene.add(sphere());
     scene.add(specularSphere());
     scene.add(lighting());

@@ -31,6 +31,22 @@
         return group;
     }
 
+    function plane(){
+        var textureMap = 'textures/bumpmap.jpg';
+        var geometry = new THREE.PlaneBufferGeometry(120, 60);
+        var material = new THREE.MeshPhongMaterial({
+            map: THREE.ImageUtils.loadTexture(textureMap),
+            shininess: 50,
+            side: THREE.DoubleSide
+        });
+        var mesh = new THREE.Mesh(geometry, material);
+
+        mesh.position.z = 60;
+        mesh.rotation.y = Math.PI;
+
+        return mesh;
+    }
+
     function sphere(){
         var bumpMap = 'textures/bumpmap.jpg';
         var geometry = new THREE.SphereGeometry(30, 64, 64);
@@ -64,6 +80,7 @@
         return mesh;
     }
 
+    scene.add(plane());
     scene.add(sphere());
     scene.add(bumpSphere());
     scene.add(lighting());
