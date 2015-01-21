@@ -47,7 +47,7 @@ require([
     }
 
     function hemilight(colour, x, y, z){
-        var light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.15);
+        var light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.1);
 
         light.position.set(0, 1000, 0);
 
@@ -64,7 +64,7 @@ require([
         light.shadowMapHeight = 1024;
         light.shadowDarkness = 0.2;
 
-        light.target.position.set(0, 40, 0);
+        light.target.position.set(0, 60, 0);
 
         return light;
     }
@@ -79,7 +79,7 @@ require([
         light.shadowMapHeight = 1024;
         light.shadowDarkness = 0.2;
 
-        light.target.position.set(0, 40, 0);
+        light.target.position.set(0, 60, 0);
 
         return light;
     }

@@ -4,7 +4,7 @@ define(function(){
     return function datControls(){
         var gui = new dat.GUI();
         var config = {
-            'rotation': true,
+            'rotation': false,
             'rotationSpeed': 0.01,
             'cameraDistance': 200,
             'cameraX': 37,
@@ -12,17 +12,17 @@ define(function(){
             'cameraZ': 147,
             'targetY': 38,
             'keyLightColour': 0xffffff,
-            'keyLightX': -120,
-            'keyLightY': 235,
+            'keyLightX': -52,
+            'keyLightY': 210,
             'keyLightZ': 390,
-            'fillLightColour': 0x888888,
+            'fillLightColour': 0x777777,
             'fillLightX': 191,
-            'fillLightY': 147,
+            'fillLightY': 80,
             'fillLightZ': 169,
-            'backLightColour': 0xaaaaaa,
-            'backLightX': -7,
-            'backLightY': 80,
-            'backLightZ': -90
+            'backLightColour': 0x999999,
+            'backLightX': 90,
+            'backLightY': 80,//500
+            'backLightZ': -90//-400
         };
 
         var f0 = gui.addFolder('Camera rotation');
