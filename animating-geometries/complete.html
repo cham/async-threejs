@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Terrain</title>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+    }
+    </style>
+  </head>
+  <body>
+    <iframe id="ytplayer" type="text/html" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/wyt_87yCyNw?rel=0&enablejsapi=1&autoplay=1&controls=0&showinfo=0&loop=1&iv_load_policy=3" frameborder="0" allowfullscreen></iframe>
+    <script>
+    var tag = document.createElement('script');
+    tag.src = "//www.youtube.com/iframe_api";
+    
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+
+    function onYouTubeIframeAPIReady(){
+        player = new YT.Player('ytplayer',{
+            events: {
+                'onReady': onPlayerReady
+            }
+        });
+    }
+
+    function onPlayerReady(event){
+        player.mute();
+        player.playVideo();
+    }
+    </script>
+    <script src="../bower_components/threejs/build/three.min.js"></script>
+    <script src="../bower_components/datgui/build/dat.gui.min.js"></script>
+    <script src="../bower_components/stats/build/stats.min.js"></script>
+    <script data-main="main" src="../bower_components/requirejs/require.js"></script>
+  </body>
+</html>
