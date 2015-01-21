@@ -178,7 +178,7 @@
         </div>
     </section>
     <section>
-        <iframe data-src="http://www.youtube.com/embed/c69EwOhj-_Y?autoplay=1&amp;autohide=1" width="100%" height="100%" wmode="transparent"></iframe>
+        <iframe data-src="../intro-examples/physijs.html" width="100%" height="100%" wmode="transparent"></iframe>
         <div class="content">
             <div class="subsection">
                 <ul>
@@ -2700,11 +2700,199 @@
         <h2>Particles</h2>
     </section>
     <section>
-        <iframe data-src="http://dan.nea.me/particlebox" width="100%" height="100%"></iframe>
+        <iframe data-src="../particles/particle-sphere.html" width="100%" height="100%"></iframe>
         <div class="content">
             <div class="subsection">
                 <ul>
                     <li>Particles</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Particles are a lot easier to work with than you might think</li>
+                    <li>In Three.js, Particles are just vertices on a Geometry</li>
+                    <li>There's a special Material type called "PointCloudMaterial" that can be used to render each vertex as a point</li>
+                    <li>And instead of creating a Mesh, you create a ParticleSystem</li>
+                </ul>
+<pre><code class="js">
+    function particleSphere(){
+        var geometry = new THREE.SphereGeometry(120, 16, 12);
+        var material = new THREE.PointCloudMaterial({
+            size: 5,
+            color: 0x339900
+        });
+        var system = new THREE.ParticleSystem(geometry, material);
+
+        system.position.y = 100;
+
+        return system;
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>You can't alter Geometries on the fly, so you need to start your scene with all your particles present</li>
+                    <li>What you can do to get around this, is to have all the particles / vertices set to one position or off screen</li>
+                    <li>So they either all render as a single pixel, or you just don't see them at all</li>
+                    <li><i>OR</i> you can rebuild your ParticleSystem on each tick - this is prohibitively expensive, though!</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+    <section>
+        <iframe data-src="../particles/particlebox.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>The "Particle Box"</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>What I've done here is generate a Geometry programatically</li>
+                    <li>This Geometry is then used for a ParticleSystem</li>
+                    <li>The particles are initially placed in the bottom corner of the box</li>
+                    <li>We'll cover the tick() method next</li>
+                </ul>
+<pre><code class="js">
+    function createParticles(boxSize){
+        var numActiveParticles = 0;
+        var totalParticles = 20000;
+        var geometry = new THREE.Geometry();
+        var material = new THREE.PointCloudMaterial({
+            size: 2,
+            color: 0x339900
+        });
+
+        for(var i = 0; i &lt; totalParticles; i++){
+            var bottomCorner = new THREE.Vector3(-boxSize/2, -boxSize/2, -boxSize/2);
+            geometry.vertices.push(bottomCorner);
+        }
+
+        function tick(){
+            // see next slide
+        }
+        requestAnimationFrame(tick);
+
+        return new THREE.ParticleSystem(geometry, material);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Now for the tick method</li>
+                    <li>This controls both 'firing' the particles from their starting point</li>
+                    <li>And moving each particle based on it's velocity</li>
+                    <li>Particles are fired one after the other until all particles are active</li>
+                </ul>
+<pre><code class="js">
+    function tick(){
+        requestAnimationFrame(tick);
+
+        if(numActiveParticles &lt; totalParticles){
+            fireParticle(geometry.vertices[numActiveParticles]);
+            numActiveParticles++;
+        }
+
+        moveParticles(geometry.vertices, boxSize);
+        geometry.verticesNeedUpdate = true;
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>
+                        The fireParticle function simply sets two properties on the particle passed:
+                        <ol>
+                            <li>An 'active' property</li>
+                            <li>An initial 'velocity', in 3 dimensions</li>
+                        </ol>
+                    </li>
+                </ul>
+<pre><code class="js">
+    function fireParticle(vertex){
+        vertex.active = true;
+        vertex.velocity = new THREE.Vector3(0, 0, 0);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>moveParticles is a bit more interesting</li>
+                    <li>It loops over every particle in the geometry, skipping any that aren't active</li>
+                    <li>Then adds the 'worldAccelleration' vector to the particle's velocity</li>
+                    <li>Once the velocity has been calculated, the particle's position is increased by it's velocity</li>
+                    <li>That means that on each tick, it's velocity is increased by the acceleration</li>
+                    <li>And it's position is increased by it's velocity</li>
+                    <li>Then it calls a bounceParticle method to ensure the particle hasn't gone outside the box</li>
+                </ul>
+<pre><code class="js">
+    function moveParticles(particles, boxSize){
+        
+        var worldAccelleration = new THREE.Vector3(0.01, 0.02, 0.04);
+
+        for(var i = 0; i &lt; particles.length; i++){
+            var particle = particles[i];
+            
+            if(!particle.active){
+                continue;
+            }
+
+            particle.velocity.add(worldAccelleration);
+
+            particle.x += particle.velocity.x;
+            particle.y += particle.velocity.y;
+            particle.z += particle.velocity.z;
+
+            bounceParticle(particle, boxSize);
+        }
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>bounceParticle calls bounceAxis for each dimension in 3D space</li>
+                    <li>bounceAxis first checks to see if the particle's position is outside of the box in the given axis</li>
+                    <li>If it is outside the box, it reverses the velocity of the particle in that axis</li>
+                    <li>In other words, it bounces it on that axis</li>
+                    <li>It also slows the particle down by 20% - simulating friction</li>
+                </ul>
+<pre><code class="js">
+    function bounceParticle(particle, size){
+        bounceAxis(particle, 'x', size);
+        bounceAxis(particle, 'y', size);
+        bounceAxis(particle, 'z', size);
+    }
+
+    function bounceAxis(particle, axis, size){
+        var halfsize = size / 2;
+        if(particle[axis] &gt; -halfsize && particle[axis] &lt; halfsize){
+            return; // do nothing - it's inside the box
+        }
+        particle.velocity[axis] = -particle.velocity[axis];
+        particle.velocity.multiplyScalar(0.8);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>
+                        So to summarise:
+                        <ol>
+                            <li>We create a Geometry with all of it's vertices in one place - these vertices are our particles</li>
+                            <li>Every tick, we fire one particle off and move any that have been fired</li>
+                            <li>Each active particle has it's velocity increased by the world accelleration</li>
+                            <li>Each active particle has it's position increased by it's velocity</li>
+                            <li>And each particle is bounced off the edge of the box it's in and slowed down, if it's outside the box</li>
+                        </ol>
+                    </li>
                 </ul>
             </div>
             <div class="subsection always-invisible"></div>
