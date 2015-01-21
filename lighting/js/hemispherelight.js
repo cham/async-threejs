@@ -15,11 +15,11 @@ require([
             'cameraY': 160,
             'cameraZ': 0,
             'ambient': 0x000000,
-            'lightColour': 0xffffff,
-            'groundColour': 0x112211,
-            'lightX': 100,
-            'lightY': 100,
-            'lightZ': -100,
+            'lightColour': 0xebe8c3,
+            'groundColour': 0x265726,
+            'lightX': 0,
+            'lightY': 1,
+            'lightZ': 0,
             'showFrustrum': false,
             'castShadow': true,
             'shadowDarkness': 0.4
@@ -51,13 +51,14 @@ require([
         return mesh;
     }
 
-    function cube(){
-        var geometry = new THREE.BoxGeometry(40, 40, 40);
-        var material = new THREE.MeshLambertMaterial({color: 0x00ff00});
+    function importedObject(geometry){
+        var material = new THREE.MeshLambertMaterial({color: 0xffffff});
         var mesh = new THREE.Mesh(geometry, material);
 
-        mesh.position.set(0, 20, 0);
+        mesh.scale.set(0.4, 0.4, 0.4);
+        mesh.rotation.y = Math.PI / 2;
         mesh.castShadow = true;
+        mesh.receiveShadow = true;
 
         return mesh;
     }
@@ -94,7 +95,10 @@ require([
         return stats;
     }
 
-    function run(){
+    var jsonLoader = new THREE.JSONLoader();
+    var file = 'models/statue.js';
+
+    jsonLoader.load(file, function(geometry){
         var datControls = controls();
         var stats = makeStats();
         var sandbox = new Sandbox({
@@ -111,7 +115,7 @@ require([
         }
 
         sandbox.add(pyramid());
-        sandbox.add(cube());
+        sandbox.add(importedObject(geometry));
         sandbox.add(sphere());
         sandbox.add(plane());
 
@@ -121,8 +125,6 @@ require([
 
         sandbox.appendTo(document.body);
         requestAnimationFrame(tick);
-    }
-
-    run();
+    });
 
 });

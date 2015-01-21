@@ -55,13 +55,14 @@ require([
         return mesh;
     }
 
-    function cube(){
-        var geometry = new THREE.BoxGeometry(40, 40, 40);
-        var material = new THREE.MeshLambertMaterial({color: 0x00ff00});
+    function importedObject(geometry){
+        var material = new THREE.MeshLambertMaterial({color: 0xffffff});
         var mesh = new THREE.Mesh(geometry, material);
 
-        mesh.position.set(0, 20, 0);
+        mesh.scale.set(0.4, 0.4, 0.4);
+        mesh.rotation.y = Math.PI / 2;
         mesh.castShadow = true;
+        mesh.receiveShadow = true;
 
         return mesh;
     }
@@ -98,7 +99,10 @@ require([
         return stats;
     }
 
-    function run(){
+    var jsonLoader = new THREE.JSONLoader();
+    var file = 'models/statue.js';
+
+    jsonLoader.load(file, function(geometry){
         var datControls = controls();
         var stats = makeStats();
         var sandbox = new Sandbox({
@@ -115,8 +119,8 @@ require([
         }
 
         sandbox.add(pyramid());
-        sandbox.add(cube());
         sandbox.add(sphere());
+        sandbox.add(importedObject(geometry));
         sandbox.add(plane());
 
         window.addEventListener('resize', function(){
@@ -125,8 +129,6 @@ require([
 
         sandbox.appendTo(document.body);
         requestAnimationFrame(tick);
-    }
-
-    run();
+    });
 
 });
