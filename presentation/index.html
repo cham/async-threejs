@@ -101,19 +101,112 @@
         <h2>What is Three.js?</h2>
     </section>
     <section>
-        <iframe data-src="http://www.youtube.com/embed/YY7J6xIkt9M?autoplay=1&amp;autohide=1" width="100%" height="100%" wmode="transparent"></iframe>
+        <iframe data-src="http://www.youtube.com/embed/ADRf8SE3RbM?autoplay=1&amp;autohide=1&amp;start=31" width="100%" height="100%" wmode="transparent"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Three.js is a JavaScript library that makes working with WebGL simpler</li>
+                    <li>It gives you a higher abstraction over the raw WebGL code</li>
+                    <li>This allows you to work with Spheres and Cubes instead of Vertices and Matrixes</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The abstraction means you can spend more time working on the visualisation or application you want to build</li>
+                    <li>Rather than spending your time doing matrix transforms and calculating points on a mesh</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>It's an open source project, built and maintained by Ricardo Cabello, aka "Mr Doob"</li>
+                    <li>You can find it on GitHub - https://github.com/mrdoob/three.js</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The minified source weighs in at about 400kb</li>
+                    <li>The bower package pulls down the whole repo, which is hundreds of megabytes</li>
+                    <li>Probably best to use the minified file rather than the bower package for now</li>
+                    <li>It's not available as an AMD module yet, so you'll need to access it as window.THREE after imported</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Adding the library is straightforward:</li>
+                </ul>
+<pre><code class="html">
+  &lt;body&gt;
+    &lt;script src="three.min.js"&gt;&lt;/script&gt;
+    &lt;script src="your-stuff.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
     </section>
     <section>
-        <iframe data-src="http://www.youtube.com/embed/ADRf8SE3RbM?autoplay=1&amp;autohide=1&amp;start=31" width="100%" height="100%" wmode="transparent"></iframe>
+        <iframe data-src="http://pablotheflamingo.com/" width="100%" height="100%" wmode="transparent"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>WebGL doesn't have to be used for 3D</li>
+                    <li>It's also great for 2D!</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>There are a bunch of advantages to rendering your graphics on the GPU rather than the CPU</li>
+                    <li>If you render and animate on the CPU, your animation and rendering will be competing with everything else going on in your app</li>
+                    <li>You get a single thread per browser window</li>
+                    <li>You might even end up competing with everything else going on in the operating system!</li>
+                    <li>This means you often have to reduce complexity in your visualisations and apps quite early on</li>
+                    <li>It can also result in chop and stuttering</li>
+                    <li>This is even why CSS, for example, is moving towards hardware accellerated animation</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>If you're lucky, you'll have 4 or 8 cores available on your CPU</li>
+                    <li>Modern GPUs have about 1500 cuda cores</li>
+                    <li>GPU cores are <i>great</i> at executing a huge number of parallel computations</li>
+                    <li>The hardware is specifically designed for rendering and animating graphics</li>
+                    <li>(Or you can use them to mine Dogecoins)</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
     </section>
     <section>
         <iframe data-src="http://www.youtube.com/embed/c69EwOhj-_Y?autoplay=1&amp;autohide=1" width="100%" height="100%" wmode="transparent"></iframe>
-    </section>
-    <section>
-        <iframe data-src="http://www.youtube.com/embed/R0O_9bp3EKQ?autoplay=1&amp;autohide=1" width="100%" height="100%" wmode="transparent"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Three.js has a number of plugins available</li>
+                    <li>For example, Physi.js is a physics engine you can plug in to magically enable physics in your scenes</li>
+                    <li>There are also a bunch of custom shaders available, Post Processing effects, and so on</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
     </section>
     <section>
         <iframe data-src="http://www.youtube.com/embed/GF2s5r-trRQ?autoplay=1&amp;autohide=1" width="100%" height="100%" wmode="transparent"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>You can also use Three.js to build Games, Simulations, Virtual Worlds, etc etc</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Three.js has been around for about 5 years now</li>
+                    <li>The docs used to be truly awful but have come along a lot recently</li>
+                    <li>Still, a lot of people learn by looking at examples and reverse engineering them</li>
+                    <li>In this talk I'll try to give you a decent introduction so you can skip the first few weeks of figuring out how it works!</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
     </section>
 
     <section class="intro">
@@ -505,7 +598,6 @@
             <div class="subsection">
                 <ul>
                     <li>If both axes use a sine wave, or both use a cosine wave, then we get a nicely eased but linear line, diagonally</li>
-                    <li><small>some live coding! or change all instances of "Math.cos" to "Math.sin" in animation-basics/circular-motion.html</small></li>
                 </ul>
             </div>
             <div class="subsection always-invisible"></div>
@@ -810,6 +902,16 @@
 </code></pre>
             </div>
             <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+    <section>
+        <iframe data-src="../objects/boxes.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Normals</li>
+                </ul>
+            </div>
         </div>
     </section>
     <section>
@@ -1537,6 +1639,27 @@
                     <li>Transparency</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Our cloud sphere in the previous example is a bit overpowering</li>
+                    <li>We could knock the colour back a bit but then we'll get grey clouds</li>
+                    <li>Ideally, the clouds should be partially transparent</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>This is pretty easy to achieve with the opacity property:</li>
+                </ul>
+<pre><code class="js">
+    var material = new THREE.MeshPhongMaterial({
+        alphaMap: THREE.ImageUtils.loadTexture(textureMap),
+        transparent: true,
+        opacity: 0.7
+    });
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -1547,6 +1670,39 @@
                     <li>Material sides</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>By default, materials will only show on the front / outside of the object's mesh</li>
+                    <li>This is defined with THREE.FrontSide, or simply '0'</li>
+                    <li>To have the material show on the back or 'inside' an object, set the side property to THREE.BackSide</li>
+                    <li>Or if you want it on both the front and back, use THREE.DoubleSide</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>In this example, I've made a much bigger sphere, so that the camera is inside it</li>
+                    <li>Then I've set the material to be a 'stars' map, only showing on the inside of the sphere</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The code is almost identical to the texture map example from earlier:</li>
+                </ul>
+<pre><code class="js">
+    function stars(){
+        var textureMap = 'textures/starmap.png';
+        var geometry = new THREE.SphereGeometry(1000, 64, 64);
+        var material = new THREE.MeshBasicMaterial({
+            map: THREE.ImageUtils.loadTexture(textureMap),
+            side: THREE.BackSide
+        });
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -1557,6 +1713,78 @@
                     <li>Custom shaders</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>For the glow around our earth we're going to need to make a custom shader</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Shaders are written in C</li>
+                    <li>Can be a little tricky to get your head around</li>
+                    <li>Fortunately, since they are "cross library", it's pretty easy to find them on the internet</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>
+                        There are two main components to a shader:
+                        <ol>
+                            <li>The Vertex shader</li>
+                            <li>The Fragment shader</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The Vertex shader defines how the geometry of the object should be rendered</li>
+                    <li>The glow on this scene is just a Sphere, like everything else</li>
+                    <li>Since I don't need to alter the shape of the object, the Vertex shader here just renders it "as is"</li>
+                </ul>
+<pre><code class="c">
+    varying vec3 vNormal;
+    void main(){
+        vNormal = normalize(normalMatrix * normal);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1);
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Fragment shaders define how each pixel should be rendered, after the Vertex shader has defined it's geometry</li>
+                    <li>For our glow, it's a bit more interesting than the Vertex shader</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>What our Fragment shader is doing here is first calculating the intensity of the pixel, based on the z-position of it's normal</li>
+                    <li>Or, the dot product of it's Normal and a Vector of 0,0,1, to the power of 3</li>
+                    <li>The 'dot product' is an operation that takes two Vectors of equal length and produces a single number</li>
+                    <li>By calculating the dot product of the Normal and a Vector of 0,0,1, we end up with just the Z position</li>
+                    <li>So - the intensity is the Z position relative to the origin of the sphere, cubed</li>
+                    <li>Or - the intensity is the distance of the pixel from the center, with a cubic falloff</li>
+                    <li>This is then used to calculate the colour of the pixel. The further away from the center, the darker and more opaque the pixel</li>
+                    <li>Which gives us a 'glow' effect!</li>
+                </ul>
+<pre><code class="c">
+    varying vec3 vNormal;
+    void main(){
+        float intensity = pow( dot(vNormal, vec3(0.0, 0.0, 1.0)), 3);
+        gl_FragColor = vec4(0.7, 0.8, 1.0, 1.0) * intensity;
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Don't worry if you don't understand all the maths in that. I don't really get it either!</li>
+                    <li>Reading up a bit on Cartesian and Euclidean theory doesn't hurt, but for most things in Three.js you don't need to</li>
+                    <li>Most of the time you can find a shader online and alter it to your needs</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
 
@@ -1571,6 +1799,59 @@
                     <li>Importing objects</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>A horse!</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Importing objects into your Three.js scenes is very easy!</li>
+                    <li>Building an object like this in Three.js would be very hard</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>If you need complicated objects like this, it's best to model them in a 3D modelling package and export them</li>
+                    <li>Anything that can export .obj files will be fine</li>
+                    <li>For example, Blender is a free, cross platform app with an active community and plenty of tutorials</li>
+                    <li>Or you can do what I've done here, and download the obj from a repository on the internet</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Once you've downloaded or exported your .obj file, there's a python script that comes with Three.js which can convert it for you</li>
+                    <li>This script can be found in the Three.js Github repo, currently under /utils/converters/obj</li>
+                </ul>
+<pre><code class="bash">
+    python convert_obj_three.py -i horse.obj -o horse.js
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>When you have your horse.js file, use a THREE.JSONLoader to import it</li>
+                    <li>Here's the complete source for this scene:</li>
+                </ul>
+<pre><code class="js">
+    var jsonLoader = new THREE.JSONLoader();
+    var file = 'horse.js';
+
+    jsonLoader.load(file, function(geometry, materials){
+        var wireframeMaterial = new THREE.MeshBasicMaterial({
+            color: 0xff0000,
+            wireframe: true
+        });
+        var mesh = new THREE.Mesh(geometry, wireframeMaterial);
+
+        mesh.scale.set(7, 7, 7);
+
+        scene.add(mesh);
+    });
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -1581,6 +1862,66 @@
                     <li>Using imported textures</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>In the previous example I've set the material to a wireframe so it's easier to see the imported geometry</li>
+                    <li>But the output of the converter will also include materials, if they are present</li>
+                    <li>Using these is pretty easy, but I've found it's a little buggy</li>
+                    <li>Sometimes they don't work at all, sometimes the textures aren't included, and so on</li>
+                    <li>Fortunately for the horse I prepared earlier, the textures came over fine</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The materials are passed to the callback from JSONLoader.load as an array</li>
+                </ul>
+<pre><code class="js">
+    jsonLoader.load(file, function(geometry, materials){
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>If your object only has one material you can just pass the first item of the array to your new THREE.Mesh:</li>
+                </ul>
+<pre><code class="js">
+    var mesh = new THREE.Mesh(geometry, materials[0]);
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>If like the horse, it has multiple materials, you can use the "createMultiMaterialObject" utility</li>
+                    <li>As you've probably guessed, this creates a mesh from a geometry and applies multiple materials to it</li>
+                </ul>
+<pre><code class="js">
+    var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, materials);
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>So here's the complete code for our textured horse:</li>
+                </ul>
+<pre><code class="js">
+    var light = new THREE.SpotLight();
+    light.position.set(500, 500, 500);
+    scene.add(light);
+
+    var jsonLoader = new THREE.JSONLoader();
+    var file = 'horse.js';
+
+    jsonLoader.load(file, function(geometry, materials){
+        var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, materials);
+        
+        mesh.scale.set(7, 7, 7);
+
+        scene.add(mesh);
+    });
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
 
@@ -1595,16 +1936,237 @@
                     <li>An improved sandbox</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Adjusting Three.js scenes can be <i>hard</i></li>
+                    <li>Even small adjustments to e.g.: your camera or light position can have a big effect</li>
+                    <li>Changing values in the code and reloading the scene each time can be quite slow</li>
+                    <li>So we need to use something a little more interactive</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Dat.gui is great for this</li>
+                    <li>It's a "lightweight graphical user interface for changing variables in JavaScript"</li>
+                    <li>The controls on the right hand side are built with dat.gui</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>To use dat.gui, first you create a config map with the values that you want to control</li>
+                </ul>
+<pre><code class="js">
+    var config = {
+        'rotation': true,
+        'rotationSpeed': 0.01,
+        'cameraDistance': 200,
+        'cameraX': 150,
+        'cameraY': 80,
+        'cameraZ': -10,
+        'ambient': 0x111111,
+        'spotlight': 0xE9C2A6,
+        'spotlightX': 100,
+        'spotlightY': 100,
+        'spotlightZ': -100
+    };
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Then, pass this config to your Sandbox</li>
+                </ul>
+<pre><code class="js">
+    var sandbox = new Sandbox({
+        controls: controls
+    });
+
+    ...
+
+    function Sandbox(options){
+        this.controls = options.controls;
+
+        this.ambient = new THREE.AmbientLight(this.controls.ambient, 1);
+        this.spotlight = spotlight(
+            this.controls.spotlight,
+            this.controls.spotlightX,
+            this.controls.spotlightY,
+            this.controls.spotlightZ
+        );
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>You'll need to update your Sandbox on each render tick, in case the values have changed:</li>
+                </ul>
+<pre><code class="js">
+    Sandbox.prototype.animate = function(){
+        var camera = this.camera;
+        var controls = this.controls;
+        var ambient = this.ambient;
+        var spotlight = this.spotlight;
+        var numTicks = 0;
+
+        function tick(){
+            requestAnimationFrame(tick);
+
+            ambient.color = new THREE.Color(controls.ambient);
+            spotlight.position.set(controls.spotlightX, controls.spotlightY, controls.spotlightZ);
+            spotlight.color = new THREE.Color(controls.spotlight);
+
+            if(controls.rotation){
+                rotateCamera(camera, controls, numTicks);
+                numTicks++;
+            }else{
+                positionCamera(camera, controls);
+            }
+        }
+        tick();
+    };
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>At this point everything is ready for the values in config to change</li>
+                    <li>They're passed by reference, so changing config values outside Sandbox will update the values in Sandbox</li>
+                    <li>This is where dat.gui comes in!</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>First make a function to wrap your config</li>
+                </ul>
+<pre><code class="js">
+    function datControls(){
+        var config = {
+            'rotation': true,
+            'rotationSpeed': 0.01,
+            'cameraDistance': 200,
+            'cameraX': 150,
+            'cameraY': 80,
+            'cameraZ': -10,
+            'ambient': 0x111111,
+            'spotlight': 0xE9C2A6,
+            'spotlightX': 100,
+            'spotlightY': 100,
+            'spotlightZ': -100
+        };
+
+        return config;
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Then, weave it through dat.gui</li>
+                    <li>Creating the new dat.GUI will inject it's DOM into the page for you</li>
+                    <li>Booleans just need adding to the config, Numbers need a range, and colours have their own addColour method</li>
+                </ul>
+<pre><code class="js">
+    function datControls(){
+        var gui = new dat.GUI();
+        var config = {
+            'rotation': true,
+            'rotationSpeed': 0.01,
+            'cameraDistance': 200,
+            'cameraX': 150,
+            'cameraY': 80,
+            'cameraZ': -10,
+            'ambient': 0x111111,
+            'spotlight': 0xE9C2A6,
+            'spotlightX': 100,
+            'spotlightY': 100,
+            'spotlightZ': -100
+        };
+
+        gui.add(config, 'rotation');
+        gui.add(config, 'rotationSpeed', -0.1, 0.1);
+        gui.addColor(config, 'ambient');
+
+        return config;
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>You can create folders with dat.gui to group parts of the config together</li>
+                </ul>
+<pre><code class="js">
+    function datControls(){
+        var gui = new dat.GUI();
+        var config = {
+            ...
+        };
+
+        var f0 = gui.addFolder('Camera rotation');
+        f0.add(config, 'rotation');
+        f0.add(config, 'rotationSpeed', -0.1, 0.1);
+        f0.add(config, 'cameraDistance', 0, 1000);
+        f0.open();
+
+        ...
+
+        return config;
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
-        <iframe data-src="../improved-sandbox/imported-objects.html" width="100%" height="100%"></iframe>
+        <iframe data-src="../improved-sandbox/fps.html" width="100%" height="100%"></iframe>
         <div class="content">
             <div class="subsection">
                 <ul>
-                    <li>Sandbox with a horse!</li>
+                    <li>Measuring FPS</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Measuring the number of frames per second that your scenes render at is even easier</li>
+                    <li>Mr Doob has another project on Github called "Stats.js"</li>
+                    <li>This is imported using a script tag like Three.js</li>
+                </ul>
+<pre><code class="html">
+    &lt;script src="stats.min.js"&gt;&lt;/script&gt;
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Once it's been imported, the constructor is available as 'Stats' on the global object</li>
+                    <li>You'll need to append the stats dom node to your document</li>
+                </ul>
+<pre><code class="js">
+    var stats = new Stats();
+
+    document.body.appendChild(stats.domElement);
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>On each tick simply call stats.begin before your render</li>
+                    <li>And stats.end after your render</li>
+                </ul>
+<pre><code class="js">
+        function tick(){
+            requestAnimationFrame(tick);
+
+            stats.begin();
+            sandbox.render();
+            stats.end();
+        }
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
 
@@ -1774,7 +2336,7 @@
                 <ul>
                     <li>Hemisphere lights are similar to Directional lights, except their light is mapped as a hemisphere rather than a plane</li>
                     <li>This gives a softer, more "sun-like" effect</li>
-                    <li>Hemisphere lights can also have a ground colour</li>
+                    <li>Hemisphere lights also have a ground colour</li>
                     <li>This gives an uplight effect in the opposite direction to the main light</li>
                 </ul>
             </div>
