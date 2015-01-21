@@ -24,18 +24,19 @@
     <span class="credit">Model by <a href="http://tf3dm.com/3d-model/horse-39028.html">Lyndon D</a></span>
     <script>
 
+    var light = new THREE.SpotLight();
+    light.position.set(500, 500, 500);
+    scene.add(light);
+
     var jsonLoader = new THREE.JSONLoader();
     var file = 'horse.js';
 
     jsonLoader.load(file, function(geometry, materials){
-        var light = new THREE.SpotLight();
         var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, materials);
-
-        light.position.set(500, 500, 500);
+        
         mesh.scale.set(7, 7, 7);
 
         scene.add(mesh);
-        scene.add(light);
     });
 
     </script>

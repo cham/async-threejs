@@ -14,7 +14,7 @@ var renderer = new THREE.WebGLRenderer();
 renderer.setClearColor(0xffffff);
 renderer.setSize(wSize.width, wSize.height);
 
-camera.position.set(0, 100, 0);
+camera.position.set(0, 50, 0);
 document.body.appendChild(renderer.domElement);
 
 var tickCount = 0;
