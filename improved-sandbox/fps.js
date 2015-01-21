@@ -1,8 +1,6 @@
 require([
-    'js/controls',
     'js/Sandbox'
 ], function(
-    controls,
     Sandbox
 ){
     'use strict';
@@ -30,17 +28,42 @@ require([
         return mesh;
     }
 
+    function makeStats(){
+        var stats = new Stats();
+
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.top = 0;
+        stats.domElement.style.right = 0;
+        document.body.appendChild(stats.domElement);
+
+        return stats;
+    }
+
     var jsonLoader = new THREE.JSONLoader();
     var file = '../importing-objects/horse.js';
 
     jsonLoader.load(file, function run(geometry, materials){
-        var datControls = controls();
+        var stats = makeStats();
         var sandbox = new Sandbox({
-            controls: datControls
+            controls: {
+                rotation: true,
+                rotationSpeed: 0.01,
+                cameraDistance: 200,
+                cameraX: 150,
+                cameraY: 80,
+                cameraZ: -10,
+                ambient: 0x111111,
+                spotlight: 0xE9C2A6,
+                spotlightX: 100,
+                spotlightY: 100,
+                spotlightZ: -100
+            }
         });
 
         function tick(){
+            stats.begin();
             sandbox.render();
+            stats.end();
 
             requestAnimationFrame(tick);
         }
