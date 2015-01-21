@@ -793,6 +793,66 @@
     </section>
 
     <section class="intro">
+        <h2>Reusing boilerplate code</h2>
+    </section>
+    <section>
+        <iframe data-src="../animation-basics/moving-camera.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>There's a bit of repetition going on in our scenes now</li>
+                    <li>We're always defining a scene, a camera, and a renderer</li>
+                    <li>It makes sense to move this code to a separate file</li>
+                    <li>This will allow us to concentrate on just the unique parts of our scenes rather than copy pasting boilerplate</li>
+                    <li>It also keeps your files nice and light</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Here's the code we should move to a separate file. We'll call it 'sandbox.js'</li>
+                    <li>In later examples, we'll just include this file to set up the basic components of a scene for us</li>
+                    <li>It's not <i>super</i> sophisticated, but it'll do for now - it just sets up a scene, camera and renderer and moves the camera round in a circle</li>
+                </ul>
+<pre><code class="js">
+    function windowSize(){
+        return {
+            width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+            height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+        };
+    }
+
+    var wSize = windowSize();
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(40, wSize.width / wSize.height);
+    var renderer = new THREE.WebGLRenderer();
+
+    renderer.setClearColor(0xffffff);
+    renderer.setSize(wSize.width, wSize.height);
+
+    camera.position.set(0, 50, 0);
+    document.body.appendChild(renderer.domElement);
+
+    var tickCount = 0;
+    function tick(){
+        requestAnimationFrame(tick);
+
+        camera.position.x = Math.sin(tickCount) * 100;
+        camera.position.z = Math.cos(tickCount) * 100;
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+        renderer.render(scene, camera);
+
+        tickCount += 0.005;
+    }
+    tick();
+
+</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="intro">
         <h2>Geometries</h2>
     </section>
     <section>
@@ -2903,11 +2963,167 @@
         <h2>Voxels</h2>
     </section>
     <section>
-        <iframe data-src="http://dan.nea.me/voxel-castle" width="100%" height="100%"></iframe>
+        <iframe data-src="../voxels/basic.html" width="100%" height="100%"></iframe>
         <div class="content">
             <div class="subsection">
                 <ul>
-                    <li>Voxels</li>
+                    <li>"Voxel" is a portmanteau of "Volume" and "Pixel"</li>
+                    <li>Basically, they are Boxes used to create more complicated geometries</li>
+                    <li>They've been used more frequently in games since the advent of Minecraft</li>
+                    <li>In this section we'll see how you can make your own Minecraft-like game</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>First off we'll need a function that can draw our Voxels at given positions</li>
+                    <li>Note that the dimensions and position are based on a 'voxel size'</li>
+                    <li>The x, y, z coordinates we pass the function refer to "Voxel space", not Cartesian coordinates</li>
+                </ul>
+<pre><code class="js">
+    var voxelSize = 20;
+    function voxel(x, y, z){
+        var geometry = new THREE.BoxGeometry(voxelSize, voxelSize, voxelSize);
+        var material = new THREE.MeshLambertMaterial({
+            map: THREE.ImageUtils.loadTexture('img/minecraft_brick.jpg')
+        });
+        var mesh = new THREE.Mesh(geometry, material);
+
+        mesh.position.set(voxelSize * x, voxelSize * y + voxelSize / 2, voxelSize * z);
+
+        return mesh;
+    }
+
+    ...
+
+    sandbox.add(voxel(0, 0, 0));
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+    <section>
+        <iframe data-src="../voxels/floor.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Since our voxel method takes coordinates in "Voxel space", we can build maps to programatically add voxels</li>
+                    <li>Here's how we'd define an 8x8 'floor' map</li>
+                </ul>
+<pre><code class="js">
+    var floor = [
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1]
+    ];
+
+</code></pre>
+                <ul>
+                    <li>It's pretty simple, all we do is fill in each entry in the array with a 1</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>We can then iterate over this 2D array to add the voxels at their given positions</li>
+                    <li>I've used a THREE.Group here to group the voxels together</li>
+                    <li>This allows you to treat the voxels generated by iterating over the floor array as a single object</li>
+                </ul>
+<pre><code class="js">
+    var houseGroup = new THREE.Group();
+    
+    floor.forEach(function(row, rowNum){
+        row.forEach(function(point, pointNum){
+            if(point === 1){
+                houseGroup.add(voxel(rowNum, 0, pointNum));
+            }
+        });
+    });
+
+    houseGroup.position.x = -45;
+    houseGroup.position.z = -45;
+
+    sandbox.add(houseGroup);
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+    <section>
+        <iframe data-src="../voxels/house.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>So, we've done 1 dimension (a point or single voxel), 2 dimensions (our floor), now let's do 3 dimensions (a house)</li>
+                    <li>It's easy to do - we define additional 8x8 maps for each slice of the house we want</li>
+                    <li>Wherever we need a voxel, put a 1, and where we want empty space, put a 0</li>
+                    <li>For example, here's a wall for our house, with space for a door:</li>
+                </ul>
+<pre><code class="js">
+    var wall = [
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 1, 1, 0, 0, 1, 1, 1]
+    ];
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>After we've defined our different slice types, it's simply a case of joining them together to form a building</li>
+<pre><code class="js">
+    var house = [floor, wall, wallWithWindow, wallWithWindow, wallWithoutDoor, floor, roof, chimney, chimney];
+
+</code></pre>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>We need to change our Group builder slightly to allow for the additional dimension, but everything else stays the same</li>
+<pre><code class="js">
+    house.forEach(function(slice, sliceNum){
+        slice.forEach(function(row, rowNum){
+            row.forEach(function(point, pointNum){
+                if(point === 1){
+                    houseGroup.add(voxel(rowNum, sliceNum, pointNum));
+                }
+            });
+        });
+    });
+
+</code></pre>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+    <section>
+        <iframe data-src="../voxels/house-explode.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Since these are voxels and not a solid object, you can treat them a bit like particles</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section>
+        <iframe data-src="../voxels/complete.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>And here's one I made earlier!</li>
+                    <li>I've used the 'FlyControls' to allow you to walk around, which are under 'plugins' in the Three.js repo</li>
                 </ul>
             </div>
             <div class="subsection always-invisible"></div>
