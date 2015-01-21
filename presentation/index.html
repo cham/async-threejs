@@ -2378,6 +2378,37 @@
                     <li>Sunlight</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>
+                        For a decent sunlight effect we'll need to use two lights:
+                        <ol>
+                            <li>A hemisphere light for the general effect</li>
+                            <li>A directional light for shadows</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>I've made the two lights toggleable in the controls</li>
+                    <li>If we turn off the Directional light you can see that the shadow is removed</li>
+                    <li>But the model retains the sky and ground lighting</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>If we turn off the Hemisphere light, we get the shadows but the model is harder to see</li>
+                    <li>Especially on the underside where the directional light does not affect it</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>In most of your scenes, you'll need to use at least two lights</li>
+                    <li>Lighting can be tricky to get right</li>
+                    <li>It's advisable to use dat.gui to find the optimimum values before setting them in stone</li>
+                </ul>
+            </div>
             <div class="subsection always-invisible"></div>
         </div>
     </section>
@@ -2389,6 +2420,29 @@
                     <li>Three Point lighting</li>
                 </ul>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>Three-point lighting is one of the standard setups for lighting used in theatre, video and film</li>
+                    <li>It allows you to illuminate your object, while giving you a lot of control over the shading and shadows in the scene</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>
+                        The three lights are known as:
+                        <ol>
+                            <li>The <i>key light</i> - which shines directly upon the object</li>
+                            <li>The <i>fill light</i> - which shines to the side of the object, and balances the key light</li>
+                            <li>The <i>back light</i> - which separates the object from the background, and helps to highlight contours</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>By toggling the lights on and off you can see how each one contributes to the lighting of the scene</li>
+                </ul>
+            </div>
             <div class="subsection always-invisible"></div>
         </div>
     </section>
@@ -2397,18 +2451,237 @@
         <h2>Animating Geometries</h2>
     </section>
     <section>
-        <iframe data-src="http://dan.nea.me/audioterrain" width="100%" height="100%"></iframe>
+        <iframe data-src="../animating-geometries/terrain.html" width="100%" height="100%"></iframe>
         <div class="content">
             <div class="subsection">
                 <ul>
-                    <li>Animating Geometries</li>
+                    <li>Building the flat terrain</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>For this example we'll make an MP3 visualiser</li>
+                    <li>First off we'll need a flat terrain to animate</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Here's the code for our terrain, it's just a Plane with two Phong materials, one for the main colour and one for the wireframe:</li>
+                </ul>
+<pre><code class="js">
+    function makePlane(colours){
+        var geometry = new THREE.PlaneGeometry(1000, 1000, 128, 128);
+        var material  = new THREE.MeshPhongMaterial({
+            color: 0xFF69B4
+        });
+        var wireframeMaterial  = new THREE.MeshPhongMaterial({
+            color: 0x000000,
+            wireframe: true
+        });
+        var mesh = new THREE.SceneUtils.createMultiMaterialObject(geometry, [
+            material,
+            wireframeMaterial
+        ]);
+
+        mesh.rotation.x = -Math.PI / 2;
+
+        return mesh;
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+    <section>
+        <iframe data-src="../animating-geometries/updating-terrain.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Animating the terrain</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>To animate the terrain, we modify it's vertices on each tick</li>
+                    <li>For each vertex in the terrain's geometry, we increase or decrease it's z axis by a random amount</li>
+                    <li>After we've defined the new vertex positions, we need to tell Three.js that it's vertices need updating when renderer</li>
+                    <li>Otherwise, Three.js caches the geometry for us to save unecessary calculations</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Here's our tick function in it's entirety</li>
+                </ul>
+<pre><code class="js">
+    function tick(){
+        requestAnimationFrame(tick);
+
+        var geometry = terrain.children[0].geometry;
+        var vertices = geometry.vertices;
+        var numVertices = vertices.length;
+        var movementRange = 4;
+
+        for(var i = 0; i &lt; numVertices; i++){
+            vertices[i].z += Math.random() * movementRange - movementRange / 2;
+        }
+
+        geometry.verticesNeedUpdate = true;
+
+        terrainScene.render();
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+    <section>
+        <iframe data-src="../animating-geometries/using-audio.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Using audio</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>I'm using the HTML5 Audio API here to load an MP3 and use the wave to set vertex positions</li>
+                    <li>I won't go into the Audio side of things because that's a topic all by itself but it's not too hard</li>
+                    <li>This piece of code is the important bit:</li>
+                </ul>
+<pre><code class="js">
+    var audio = new AudioData({
+        src: 'mp3/minuit-jacuzzi.mp3',
+        width: 256,
+        onTick: function(buffer){
+            terrain.update(buffer);
+        }
+    });
+
+</code></pre>
+                <ul>
+                    <li>On every tick of Audio stream, the buffer is passed to the 'update' method of our Terrain object</li>
+                    <li>The Terrain object is just a wrapper around the plane we created earlier</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>So, on every tick of the <i>Audio stream</i>, we update the vertex positions of our terrain based on the audio buffer</li>
+                    <li>And on every tick of our <i>render loop</i>, we render the terrain with our camera</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Here's the Terrain.update method:</li>
+                </ul>
+<pre><code class="js">
+    Terrain.prototype.update = function(audioData){
+        var geometry = this.plane.children[0].geometry;
+        var vertices = geometry.vertices;
+        var faces = geometry.faces;
+
+        for(var i = 0; i &lt; audioData.length; i++){
+            setFaceVelocity(vertices, faces[i], audioData[i]);
+        }
+
+        geometry.verticesNeedUpdate = true;
+    };
+
+    function setFaceVelocity(vertices, face, velocity){
+        vertices[face.a].z = velocity;
+        vertices[face.b].z = velocity;
+        vertices[face.c].z = velocity;
+    }
+
+</code></pre>
+                <ul>
+                    <li>So, for every entry in the audio buffer / waveform</li>
+                    <li>Increase each vertex of the corresponding face in the geometry</li>
+                    <li>By the value of that entry in the waveform</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Our terrain is 128 faces wide and 128 faces high</li>
+                    <li>The Audio buffer is 128 units long</li>
+                    <li>So the only affected faces in our geometry are the first 128</li>
+                    <li>Therefore, only one line of faces in our geometry is animated</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+    <section>
+        <iframe data-src="../animating-geometries/smearing.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>The next thing we'll need to do is to move the affected faces along the terrain</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>The simplest way to do this is to copy the vertices of each line onto the next on each tick</li>
+                    <li>I've added this to the Terrain object, as the "smearDown" method</li>
+                </ul>
+<pre><code class="js">
+    var audio = new AudioData({
+        src: 'mp3/minuit-jacuzzi.mp3',
+        width: 256,
+        onTick: function(buffer){
+            terrain.update(buffer);
+            terrain.smearDown();
+        }
+    });
+
+</code></pre>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Here's the code for Terrain.smearDown</li>
+                </ul>
+<pre><code class="js">
+    Terrain.prototype.smearDown = function(){
+        var geometry = this.plane.children[0].geometry;
+        var vertices = geometry.vertices;
+        var faces = geometry.faces;
+
+        for(var i = faces.length - 1; i >= this.width; i--){
+            var aVelocity = vertices[faces[i - this.width].a].z;
+            var bVelocity = vertices[faces[i - this.width].b].z;
+            var cVelocity = vertices[faces[i - this.width].c].z;
+            var avgVelocity = (aVelocity + bVelocity + cVelocity) / 3;
+            setFaceVelocity(vertices, faces[i], avgVelocity);
+        }
+
+        geometry.verticesNeedUpdate = true;
+    };
+
+</code></pre>
+                <ul>
+                    <li>Working backwards from the end of our geometry, up to the "active" line of our geometry</li>
+                    <li>Average out the z positions of each face's vertices on the previous line (I've called this the "velocity")</li>
+                    <li>And apply this to the vertices of this face</li>
+                    <li>Averaging it out causes peaks to smooth out as they move along the terrain</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
+    </section>
+    <section>
+        <iframe data-src="../animating-geometries/complete.html" width="100%" height="100%"></iframe>
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>The completed visualiser!</li>
                 </ul>
             </div>
             <div class="subsection always-invisible"></div>
         </div>
     </section>
 
-    <section class="intro">
+    <!--section class="intro">
         <h2>Reflection</h2>
     </section>
     <section>
@@ -2421,7 +2694,7 @@
             </div>
             <div class="subsection always-invisible"></div>
         </div>
-    </section>
+    </section-->
 
     <section class="intro">
         <h2>Particles</h2>
