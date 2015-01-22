@@ -15,7 +15,7 @@ require([
     });
 
     var audio = new AudioData({
-        src: 'mp3/minuit-jacuzzi.mp3',
+        src: 'mp3/inthenews.mp3',
         width: 256,
         onTick: function(buffer){
             terrain.update(buffer);
