@@ -35,9 +35,7 @@ define(function(){
             vertex.accel = new THREE.Vector3(controls.accelX, controls.accelY, controls.accelZ);
             vertex.accel.add(vertex.impulse);
             vertex.velocity.add(vertex.accel);
-            vertex.x += vertex.velocity.x;
-            vertex.y += vertex.velocity.y;
-            vertex.z += vertex.velocity.z;
+            vertex.add(vertex.velocity);
             vertex.impulse.multiplyScalar(0.9);
             bounceVertex(vertex, size);
         }

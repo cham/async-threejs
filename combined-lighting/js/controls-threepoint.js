@@ -4,7 +4,7 @@ define(function(){
     return function datControls(){
         var gui = new dat.GUI();
         var config = {
-            'rotation': false,
+            'rotation': true,
             'rotationSpeed': 0.01,
             'cameraDistance': 200,
             'cameraX': 37,

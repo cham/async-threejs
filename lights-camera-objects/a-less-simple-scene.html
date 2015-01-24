@@ -24,7 +24,9 @@
 
     function sphere(){
         var geometry = new THREE.SphereGeometry(50, 16, 16);
-        var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+        var material = new THREE.MeshBasicMaterial({
+            color: 0x00ff00
+        });
 
         return new THREE.Mesh(geometry, material);
     }

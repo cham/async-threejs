@@ -202,9 +202,9 @@
             shininess: 0
         });
 
-        material.map = new THREE.ImageUtils.loadTexture('img/grass.jpg');
+        material.map = new THREE.ImageUtils.loadTexture('img/minecraft-grass.png');
         material.map.wrapS = material.map.wrapT = THREE.RepeatWrapping;
-        material.map.repeat.set(1024, 1024);
+        material.map.repeat.set(2048, 2048);
 
         var floor = new THREE.Mesh(
             new THREE.PlaneBufferGeometry(20000, 20000, 1, 1),
@@ -285,14 +285,15 @@
         this.camera.lookAt(this.camera.target);
 
         if(options.controls){
-            this.controls = new THREE.FlyControls(this.camera);
+            this.controls = new THREE.FirstPersonControls(this.camera);
             this.clock = new THREE.Clock();
 
             this.controls.movementSpeed = 100;
             this.controls.domElement = this.renderer.domElement;
-            this.controls.rollSpeed = Math.PI / 4;
+            // this.controls.rollSpeed = Math.PI / 4;
             this.controls.autoForward = false;
-            this.controls.dragToLook = true;
+            // this.controls.dragToLook = true;
+            this.controls.lookSpeed = 0.1;
         }
 
         addLighting(this.scene);

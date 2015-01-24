@@ -87,6 +87,9 @@
         visibility: hidden;
         padding: 0;
     }
+    a {
+        color: #fff;
+    }
     </style>
   </head>
   <body>
@@ -94,7 +97,30 @@
     <section class="intro">
         <h2>Learning Three.js</h2>
         <h3>Dan Neame <a href="https://twitter.com/cham">@cham</a></h3>
-        <h3><a href="http://dan.nea.me">dan.nea.me</a></h3>
+        <h3><a href="github.com/cham/async-threejs">github.com/cham/async-threejs</a> <a href="http://dan.nea.me">dan.nea.me</a></h3>
+    </section>
+
+    <section class="intro">
+        <h2>Who am I?</h2>
+    </section>
+    <section style="background: #000 url(https://pbs.twimg.com/profile_images/15420662/dan-n.jpg) center no-repeat">
+        <div class="content">
+            <div class="subsection">
+                <ul>
+                    <li>Dan Neame</li>
+                    <li>@cham on twitter</li>
+                    <li>http://dan.nea.me</li>
+                    <li>Lead of the Vizia team at Brandwach</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>Vizia is 100% cool and does datavis stuff</li>
+                    <li>We use a little bit of WebGL there and will be using a little more in 2015</li>
+                </ul>
+            </div>
+            <div class="subsection always-invisible"></div>
+        </div>
     </section>
 
     <section class="intro">
@@ -106,14 +132,9 @@
             <div class="subsection">
                 <ul>
                     <li>Three.js is a JavaScript library that makes working with WebGL simpler</li>
-                    <li>It gives you a higher abstraction over the raw WebGL code</li>
+                    <li>It gives you a higher abstraction over raw WebGL code</li>
                     <li>This allows you to work with Spheres and Cubes instead of Vertices and Matrixes</li>
-                </ul>
-            </div>
-            <div class="subsection">
-                <ul>
-                    <li>The abstraction means you can spend more time working on the visualisation or application you want to build</li>
-                    <li>Rather than spending your time doing matrix transforms and calculating points on a mesh</li>
+                    <li>This means you can spend more time working on the visualisation or application you want to build</li>
                 </ul>
             </div>
             <div class="subsection">
@@ -125,6 +146,7 @@
             <div class="subsection">
                 <ul>
                     <li>The minified source weighs in at about 400kb</li>
+                    <li>Not <i>huge</i>, there are bigger drawbacks right now</li>
                     <li>The bower package pulls down the whole repo, which is hundreds of megabytes</li>
                     <li>Probably best to use the minified file rather than the bower package for now</li>
                     <li>It's not available as an AMD module yet, so you'll need to access it as window.THREE after imported</li>
@@ -157,12 +179,17 @@
             <div class="subsection">
                 <ul>
                     <li>There are a bunch of advantages to rendering your graphics on the GPU rather than the CPU</li>
-                    <li>If you render and animate on the CPU, your animation and rendering will be competing with everything else going on in your app</li>
-                    <li>You get a single thread per browser window</li>
-                    <li>You might even end up competing with everything else going on in the operating system!</li>
+                    <li>Remember, you get a single thread per browser window</li>
+                    <li>If you render and animate on the CPU, you'll be competing with everything else going on in your app</li>
+                    <li>You might even end up competing with everything else going on in the operating system</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
                     <li>This means you often have to reduce complexity in your visualisations and apps quite early on</li>
                     <li>It can also result in chop and stuttering</li>
-                    <li>This is even why CSS, for example, is moving towards hardware accellerated animation</li>
+                    <li>This is why CSS, for example, is moving towards hardware accellerated animation</li>
+                    <li>And why WebGL is great, you avoid this problem entirely</li>
                 </ul>
             </div>
             <div class="subsection">
@@ -195,15 +222,25 @@
         <div class="content">
             <div class="subsection">
                 <ul>
-                    <li>You can also use Three.js to build Games, Simulations, Virtual Worlds, etc etc</li>
+                    <li>You can use Three.js to build Games, Simulations, Virtual Worlds, etc etc</li>
                 </ul>
             </div>
             <div class="subsection">
                 <ul>
                     <li>Three.js has been around for about 5 years now</li>
-                    <li>The docs used to be truly awful but have come along a lot recently</li>
+                    <li>The docs used to be pretty bad but have come a long way recently</li>
                     <li>Still, a lot of people learn by looking at examples and reverse engineering them</li>
-                    <li>In this talk I'll try to give you a decent introduction so you can skip the first few weeks of figuring out how it works!</li>
+                    <li>In this talk I'll try to give you a decent introduction so you can skip the first few weeks of head scratching!</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>In the last few sections we'll look at building a few standalone things, like an MP3 visualiser, or how to get started on your own Minecraft</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
+                    <li>There's a bunch of slides so if you have questions don't wait until the end!</li>
                 </ul>
             </div>
             <div class="subsection always-invisible"></div>
@@ -384,7 +421,6 @@
                 <ul>
                     <li>It looks like a circle since the basic material does not show any shading</li>
                     <li>If we turn on wireframes then it's a bit clearer what's going on</li>
-                    <li><small>Some live coding here! Or edit a-less-simple-scene.html to the following:</small></li>
                 </ul>
 <pre><code class="js">
     function sphere(){
@@ -428,6 +464,7 @@
     document.body.appendChild(renderer.domElement);
 
 </code></pre>
+            </div>
             <div class="subsection always-invisible"></div>
         </div>
     </section>
@@ -440,7 +477,7 @@
         <div class="content">
             <div class="subsection">
                 <ul>
-                    <li>If we want anything other than basic materials then we're going to need some lights</li>
+                    <li>If we want shading then we're going to need some lights</li>
                     <li>There are a bunch of different lights in Three that all work in different ways</li>
                     <li>In this example we'll use a SpotLight</li>
                 </ul>
@@ -452,7 +489,7 @@
             <div class="subsection">
                 <ul>
                     <li>Spotlights have a <b>position</b> and shine a cone of light on a <b>target</b></li>
-                    <li>The target will be 0, 0, 0 by default, but I've included it for reference</li>
+                    <li>The target will be 0, 0, 0 by default, but I've included it for clarity</li>
                 </ul>
 <pre><code class="js">
     light.position.set(1000, 1000, 1000);
@@ -466,11 +503,11 @@
                     <li>Their colour</li>
                     <li>Their intensity</li>
                     <li>The distance they illuminate to (default 0 = infinity)</li>
-                    <li>The angle of the light cone</li>
-                    <li>The falloff rate, if distance is not 0</li>
+                    <li>The angle of the light cone in radians</li>
+                    <li>The exponent or falloff rate, if distance is not 0</li>
                 </ul>
 <pre><code class="js">
-    var light = new THREE.SpotLight(0xff0000, 0.8, 500, 90, 2);
+    var light = new THREE.SpotLight(0xff0000, 0.8, 500, Math.PI / 2, 2);
 
 </code></pre>
             </div>
@@ -574,6 +611,7 @@
                     <li>Refreshing the page gives us a random scene each time</li>
                 </ul>
             </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
 
@@ -671,6 +709,7 @@
                     <li>Without camera.lookAt, it will keep facing in the same direction when moved rather than tracking 0, 0, 0</li>
                 </ul>
             </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -714,6 +753,7 @@
                     <li>You can come up with some really interesting paths just by modifying the period of the sine and cosine waves</li>
                 </ul>
             </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
     <section>
@@ -849,6 +889,39 @@
 
 </code></pre>
             </div>
+            <div class="subsection">
+                <ul>
+                    <li>If we include sandbox.js first, the code for the "moving camera" example is a lot simpler:</li>
+                </ul>
+<pre><code class="js">
+    function sphere(){
+        var geometry = new THREE.SphereGeometry(50, 16, 16);
+        var material = new THREE.MeshLambertMaterial({color: 0x00ff00});
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+    function randomlyPositionedSphere(maxPosition){
+        var mesh = sphere();
+
+        mesh.position.set(
+            (Math.random() * maxPosition) - (maxPosition / 2),
+            (Math.random() * maxPosition) - (maxPosition / 2),
+            (Math.random() * maxPosition) - (maxPosition / 2)
+        );
+
+        return mesh;
+    }
+
+    var boxSize = 1000;
+
+    for(var i = 0; i < 100; i++){
+        scene.add(randomlyPositionedSphere(boxSize));
+    }
+
+</code></pre>
+            </div>
+            <div class="subsection always-invisible"></div>
         </div>
     </section>
 
@@ -962,16 +1035,6 @@
 </code></pre>
             </div>
             <div class="subsection always-invisible"></div>
-        </div>
-    </section>
-    <section>
-        <iframe data-src="../objects/boxes.html" width="100%" height="100%"></iframe>
-        <div class="content">
-            <div class="subsection">
-                <ul>
-                    <li>Normals</li>
-                </ul>
-            </div>
         </div>
     </section>
     <section>
@@ -1328,9 +1391,10 @@
                     <li><b>MeshBasicMaterial</b></li>
                     <li>&nbsp;</li>
                     <li>The green sphere in this demo uses a MeshBasicMaterial</li>
-                    <li>Basic materials are just that: pretty basic</li>
+                    <li>Basic materials are just that: basic</li>
                     <li>They're good for scenes that don't require lighting, or where you need a uniform, flat colour</li>
-                    <li>They can be great for visualisations where you want a flat style, or where you want an exact colour</li>
+                    <li>They can be great for visualisations where you want a flat style or exact colour</li>
+                    <li>For that reason they can be useful for 2D visualisations</li>
                 </ul>
             </div>
             <div class="subsection">
@@ -1520,7 +1584,7 @@
             <div class="subsection">
                 <ul>
                     <li>Here's the code for our textured sphere</li>
-                    <li>THREE.ImageUtils.loadTexture handles the loading of the texture for us, so it's pretty straightforward</li>
+                    <li>THREE.ImageUtils.loadTexture handles the loading of the texture for us</li>
                     <li>Notice I've dropped the colour - it's not needed any more</li>
                 </ul>
 <pre><code class="js">
@@ -1656,8 +1720,7 @@
             <div class="subsection">
                 <ul>
                     <li>You can also see the alpha map applied to a lone sphere by itself, next to our globe</li>
-                    <li>Since clouds are white, we don't need to specify anything other than the alpha map</li>
-                    <li>Where the alpha map is white, the object will be visible, and show it's default colour, which handily is white</li>
+                    <li>Since the default colour for objects is white, we don't need to specify anything other than the alpha map</li>
                     <li>We could quite easily make the clouds red by applying a colour property to our cloud sphere</li>
                 </ul>
             </div>
@@ -1782,7 +1845,7 @@
                 <ul>
                     <li>Shaders are written in C</li>
                     <li>Can be a little tricky to get your head around</li>
-                    <li>Fortunately, since they are "cross library", it's pretty easy to find them on the internet</li>
+                    <li>Fortunately, since they are "cross library", they're easy to copy paste from the internet</li>
                 </ul>
             </div>
             <div class="subsection">
@@ -1820,11 +1883,9 @@
             <div class="subsection">
                 <ul>
                     <li>What our Fragment shader is doing here is first calculating the intensity of the pixel, based on the z-position of it's normal</li>
-                    <li>Or, the dot product of it's Normal and a Vector of 0,0,1, to the power of 3</li>
                     <li>The 'dot product' is an operation that takes two Vectors of equal length and produces a single number</li>
-                    <li>By calculating the dot product of the Normal and a Vector of 0,0,1, we end up with just the Z position</li>
-                    <li>So - the intensity is the Z position relative to the origin of the sphere, cubed</li>
-                    <li>Or - the intensity is the distance of the pixel from the center, with a cubic falloff</li>
+                    <li>So - the intensity is the position relative to the origin of the sphere, cubed</li>
+                    <li>Or - the intensity is the distance from the center of the object, with a cubic falloff</li>
                     <li>This is then used to calculate the colour of the pixel. The further away from the center, the darker and more opaque the pixel</li>
                     <li>Which gives us a 'glow' effect!</li>
                 </ul>
@@ -1840,7 +1901,7 @@
             <div class="subsection">
                 <ul>
                     <li>Don't worry if you don't understand all the maths in that. I don't really get it either!</li>
-                    <li>Reading up a bit on Cartesian and Euclidean theory doesn't hurt, but for most things in Three.js you don't need to</li>
+                    <li>Reading up a bit on Cartesian and Euclidean theory doesn't hurt</li>
                     <li>Most of the time you can find a shader online and alter it to your needs</li>
                 </ul>
             </div>
@@ -1925,10 +1986,10 @@
             <div class="subsection">
                 <ul>
                     <li>In the previous example I've set the material to a wireframe so it's easier to see the imported geometry</li>
-                    <li>But the output of the converter will also include materials, if they are present</li>
-                    <li>Using these is pretty easy, but I've found it's a little buggy</li>
-                    <li>Sometimes they don't work at all, sometimes the textures aren't included, and so on</li>
-                    <li>Fortunately for the horse I prepared earlier, the textures came over fine</li>
+                    <li>Theconverter will also include materials, if they are present</li>
+                    <li>Using imported materials is simple, but I've found it's a little buggy</li>
+                    <li>Sometimes they don't work at all, sometimes the bitmaps aren't included, and so on</li>
+                    <li>Fortunately for the horse I prepared earlier, the materials came over fine</li>
                 </ul>
             </div>
             <div class="subsection">
@@ -2265,7 +2326,6 @@
             <div class="subsection">
                 <ul>
                     <li>Each mesh in your scene will also need to be told to cast a shadow, and to receive a shadow</li>
-                    <li>These are both off by default</li>
                 </ul>
 <pre><code class="js">
     mesh.castShadow = true;
@@ -2458,7 +2518,7 @@
             </div>
             <div class="subsection">
                 <ul>
-                    <li>If we turn off the Hemisphere light, we get the shadows but the model is harder to see</li>
+                    <li>If we turn off the Hemisphere light, we keep shadows but the model is harder to see</li>
                     <li>Especially on the underside where the directional light does not affect it</li>
                 </ul>
             </div>
@@ -2482,7 +2542,7 @@
             </div>
             <div class="subsection">
                 <ul>
-                    <li>Three-point lighting is one of the standard setups for lighting used in theatre, video and film</li>
+                    <li>Three-point lighting is one of the standard lighting setups used in theatre, video and film</li>
                     <li>It allows you to illuminate your object, while giving you a lot of control over the shading and shadows in the scene</li>
                 </ul>
             </div>
@@ -2515,7 +2575,7 @@
         <div class="content">
             <div class="subsection">
                 <ul>
-                    <li>Building the flat terrain</li>
+                    <li>Building an MP3 visualiser</li>
                 </ul>
             </div>
             <div class="subsection">
@@ -2607,7 +2667,7 @@
             <div class="subsection">
                 <ul>
                     <li>I'm using the HTML5 Audio API here to load an MP3 and use the wave to set vertex positions</li>
-                    <li>I won't go into the Audio side of things because that's a topic all by itself but it's not too hard</li>
+                    <li>I won't go into the Audio side of things because that's a topic all by itself</li>
                     <li>This piece of code is the important bit:</li>
                 </ul>
 <pre><code class="js">
@@ -2811,6 +2871,11 @@
             </div>
             <div class="subsection">
                 <ul>
+                    <li>In this section we'll learn how to make a particle system with some basic physics</li>
+                </ul>
+            </div>
+            <div class="subsection">
+                <ul>
                     <li>What I've done here is generate a Geometry programatically</li>
                     <li>This Geometry is then used for a ParticleSystem</li>
                     <li>The particles are initially placed in the bottom corner of the box</li>
@@ -2818,16 +2883,17 @@
                 </ul>
 <pre><code class="js">
     function createParticles(boxSize){
-        var numActiveParticles = 0;
-        var totalParticles = 20000;
+        var bottomCorner = new THREE.Vector3(-boxSize/2, -boxSize/2, -boxSize/2);
         var geometry = new THREE.Geometry();
         var material = new THREE.PointCloudMaterial({
             size: 2,
             color: 0x339900
         });
-
+        
+        var numActiveParticles = 0; // used in tick() later
+        var totalParticles = 20000;
+        
         for(var i = 0; i &lt; totalParticles; i++){
-            var bottomCorner = new THREE.Vector3(-boxSize/2, -boxSize/2, -boxSize/2);
             geometry.vertices.push(bottomCorner);
         }
 
@@ -2865,18 +2931,11 @@
             </div>
             <div class="subsection">
                 <ul>
-                    <li>
-                        The fireParticle function simply sets two properties on the particle passed:
-                        <ol>
-                            <li>An 'active' property</li>
-                            <li>An initial 'velocity', in 3 dimensions</li>
-                        </ol>
-                    </li>
+                    <li>The fireParticle function simply sets a 'velocity' property on the particle, initially of 0</li>
                 </ul>
 <pre><code class="js">
-    function fireParticle(vertex){
-        vertex.active = true;
-        vertex.velocity = new THREE.Vector3(0, 0, 0);
+    function fireParticle(particle){
+        particle.velocity = new THREE.Vector3(0, 0, 0);
     }
 
 </code></pre>
@@ -2884,7 +2943,7 @@
             <div class="subsection">
                 <ul>
                     <li>moveParticles is a bit more interesting</li>
-                    <li>It loops over every particle in the geometry, skipping any that aren't active</li>
+                    <li>It loops over every particle in the geometry, skipping any that don't have a velocity (aren't active)</li>
                     <li>Then adds the 'worldAccelleration' vector to the particle's velocity</li>
                     <li>Once the velocity has been calculated, the particle's position is increased by it's velocity</li>
                     <li>That means that on each tick, it's velocity is increased by the acceleration</li>
@@ -2899,15 +2958,12 @@
         for(var i = 0; i &lt; particles.length; i++){
             var particle = particles[i];
             
-            if(!particle.active){
+            if(!particle.velocity){
                 continue;
             }
 
             particle.velocity.add(worldAccelleration);
-
-            particle.x += particle.velocity.x;
-            particle.y += particle.velocity.y;
-            particle.z += particle.velocity.z;
+            particle.add(particle.velocity);
 
             bounceParticle(particle, boxSize);
         }
@@ -2988,7 +3044,7 @@
         });
         var mesh = new THREE.Mesh(geometry, material);
 
-        mesh.position.set(voxelSize * x, voxelSize * y + voxelSize / 2, voxelSize * z);
+        mesh.position.set(voxelSize * x, voxelSize * y, voxelSize * z);
 
         return mesh;
     }
@@ -3008,23 +3064,25 @@
             <div class="subsection">
                 <ul>
                     <li>Since our voxel method takes coordinates in "Voxel space", we can build maps to programatically add voxels</li>
-                    <li>Here's how we'd define an 8x8 'floor' map</li>
+                    <li>Here's how we'd define an 8x8 'spiral mosaic' as a map</li>
                 </ul>
 <pre><code class="js">
-    var floor = [
+    var spiralMosaic = [
         [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1]
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 1, 1, 1, 0, 1],
+        [1, 0, 1, 0, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 1, 0, 1],
+        [1, 0, 1, 0, 1, 1, 0, 1],
+        [1, 0, 1, 0, 0, 0, 0, 1],
+        [1, 0, 1, 1, 1, 1, 1, 1]
     ];
 
 </code></pre>
                 <ul>
-                    <li>It's pretty simple, all we do is fill in each entry in the array with a 1</li>
+                    <li>It's pretty simple, all we do is fill in each entry in the array</li>
+                    <li>Put a 1 where we want a block</li>
+                    <li>Put a 0 where we want empty space</li>
                 </ul>
             </div>
             <div class="subsection">
@@ -3034,20 +3092,17 @@
                     <li>This allows you to treat the voxels generated by iterating over the floor array as a single object</li>
                 </ul>
 <pre><code class="js">
-    var houseGroup = new THREE.Group();
+    var mosaic = new THREE.Group();
     
     floor.forEach(function(row, rowNum){
         row.forEach(function(point, pointNum){
             if(point === 1){
-                houseGroup.add(voxel(rowNum, 0, pointNum));
+                mosaic.add(voxel(rowNum, 0, pointNum));
             }
         });
     });
 
-    houseGroup.position.x = -45;
-    houseGroup.position.z = -45;
-
-    sandbox.add(houseGroup);
+    sandbox.add(mosaic);
 
 </code></pre>
             </div>
@@ -3059,9 +3114,8 @@
         <div class="content">
             <div class="subsection">
                 <ul>
-                    <li>So, we've done 1 dimension (a point or single voxel), 2 dimensions (our floor), now let's do 3 dimensions (a house)</li>
+                    <li>So, we've done 1 dimension (a point or single voxel), 2 dimensions (the mosaic), now let's do 3 dimensions (a house)</li>
                     <li>It's easy to do - we define additional 8x8 maps for each slice of the house we want</li>
-                    <li>Wherever we need a voxel, put a 1, and where we want empty space, put a 0</li>
                     <li>For example, here's a wall for our house, with space for a door:</li>
                 </ul>
 <pre><code class="js">
@@ -3112,7 +3166,7 @@
         <div class="content">
             <div class="subsection">
                 <ul>
-                    <li>Since these are voxels and not a solid object, you can treat them a bit like particles</li>
+                    <li>Since the house is made of voxels and is not a solid object, you can destruct them in fun ways</li>
                 </ul>
             </div>
         </div>
@@ -3123,7 +3177,7 @@
             <div class="subsection">
                 <ul>
                     <li>And here's one I made earlier!</li>
-                    <li>I've used the 'FlyControls' to allow you to walk around, which are under 'plugins' in the Three.js repo</li>
+                    <li>I've used the 'FirstPersonControls' to allow you to walk around, which are under 'plugins' in the Three.js repo</li>
                 </ul>
             </div>
             <div class="subsection always-invisible"></div>
@@ -3133,7 +3187,7 @@
     <section class="intro">
         <h2>Fin</h2>
         <h3>Dan Neame <a href="https://twitter.com/cham">@cham</a></h3>
-        <h3><a href="http://dan.nea.me">dan.nea.me</a></h3>
+        <h3><a href="github.com/cham/async-threejs">github.com/cham/async-threejs</a> <a href="http://dan.nea.me">dan.nea.me</a></h3>
     </section>
 
 
